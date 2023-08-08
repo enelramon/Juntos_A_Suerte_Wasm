@@ -13,29 +13,39 @@ public class PersonService
         _localStorage = localStorage;
     }
 
+    public async Task AddPersonAsync(Person person)
+    {
+        var people = await GetPeopleAsync();
+        person.PersonId = people.Any() ? people.Max(p => p.PersonId) + 1 : 1;
+        people.Add(person);
+        await SavePeopleAsync(people);
+    }
+
+    private async Task SavePeopleAsync(List<Person> people)
+    {
+        await _localStorage.SetItemAsync(StorageKey, people);
+    }
+
+    public async Task AddPeopleListAsync(List<Person> newPeople)
+    {
+        var existingPeople = await GetPeopleAsync();
+        existingPeople.AddRange(newPeople);
+        await SavePeopleAsync(existingPeople);
+    }
+
     public async Task<List<Person>> GetPeopleAsync()
     {
-        // Get the people from local storage
         return await _localStorage.GetItemAsync<List<Person>>(StorageKey) ?? new List<Person>();
     }
 
-    public async Task AddPersonAsync(Person person)
+    public async Task DeletePersonAsync(int personId)
     {
-        // Add the person to the list
         var people = await GetPeopleAsync();
-        people.Add(person);
-
-        // Save the people to local storage
-        await _localStorage.SetItemAsync(StorageKey, people);
-    }
-
-    public async Task DeletePersonAsync(Person person)
-    {
-        // Remove the person from the list
-        var people = await GetPeopleAsync();
-        people.Remove(person);
-
-        // Save the people to local storage
-        await _localStorage.SetItemAsync(StorageKey, people);
+        var personToRemove = people.FirstOrDefault(p => p.PersonId == personId);
+        if (personToRemove != null)
+        {
+            people.Remove(personToRemove);
+            await SavePeopleAsync(people);
+        }
     }
 }
