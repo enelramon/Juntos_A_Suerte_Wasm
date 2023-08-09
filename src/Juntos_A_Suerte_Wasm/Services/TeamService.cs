@@ -13,15 +13,20 @@ public class TeamService
         _localStorage = localStorage;
     }
 
-    public async Task AddTeamAsync(Team team)
+    public async Task SaveAsync(string teamName)
     {
         var teams = await GetTeamsAsync();
-        team.TeamId = teams.Any() ? teams.Max(t => t.TeamId) + 1 : 1;
+        var team = new Team
+        {
+            TeamId = teams.Any() ? teams.Max(t => t.TeamId) + 1 : 1,
+            Name = teamName
+        };
+
         teams.Add(team);
         await SaveTeamsAsync(teams);
     }
 
-    private async Task SaveTeamsAsync(List<Team> teams)
+    public async Task SaveTeamsAsync(List<Team> teams)
     {
         await _localStorage.SetItemAsync(StorageKey, teams);
     }
