@@ -11,6 +11,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddSingleton<PersonService>(); // Register as a singleton
+builder.Services.AddScoped<PersonService>(); // Register as a singleton
+builder.Services.AddScoped<TeamService>(); // Register as a singleton
 
 await builder.Build().RunAsync();
