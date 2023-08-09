@@ -6,6 +6,7 @@ namespace Juntos_A_Suerte_Wasm.Services;
 public class PersonService
 {
     private readonly ILocalStorageService _localStorage;
+    private List<Person> _existingPeople = new List<Person>();
     private const string StorageKey = "people";
 
     public PersonService(ILocalStorageService localStorage)
@@ -13,24 +14,45 @@ public class PersonService
         _localStorage = localStorage;
     }
 
-    public async Task AddPersonAsync(Person person)
+    public async Task SaveAsync(string name)
     {
-        var people = await GetPeopleAsync();
-        person.PersonId = people.Any() ? people.Max(p => p.PersonId) + 1 : 1;
-        people.Add(person);
-        await SavePeopleAsync(people);
+        _existingPeople = await GetPeopleAsync();
+        var namesArray = name.Split(",");
+
+        if (namesArray.Length == 1)
+        {
+            AddPerson(name);
+        }
+        else
+        {
+            AddPeopleList(namesArray);
+        }
+
+        await SavePersonAsync();
     }
 
-    private async Task SavePeopleAsync(List<Person> people)
+    private void AddPerson(string name)
     {
-        await _localStorage.SetItemAsync(StorageKey, people);
+        var newPerson = new Person
+        {
+            PersonId = GetNextId(),
+            Name = name.Trim()
+        };
+
+        _existingPeople.Add(newPerson);
     }
 
-    public async Task AddPeopleListAsync(List<Person> newPeople)
+    private void AddPeopleList(string[] names)
     {
-        var existingPeople = await GetPeopleAsync();
-        existingPeople.AddRange(newPeople);
-        await SavePeopleAsync(existingPeople);
+        foreach (var name in names)
+        {
+            AddPerson(name);
+        }
+    }
+
+    private int GetNextId()
+    {
+        return _existingPeople!.Any() ? _existingPeople!.Max(p => p.PersonId) + 1 : 1;
     }
 
     public async Task<List<Person>> GetPeopleAsync()
@@ -40,12 +62,16 @@ public class PersonService
 
     public async Task DeletePersonAsync(int personId)
     {
-        var people = await GetPeopleAsync();
-        var personToRemove = people.FirstOrDefault(p => p.PersonId == personId);
+        _existingPeople = await GetPeopleAsync();
+        var personToRemove = _existingPeople.FirstOrDefault(p => p.PersonId == personId);
         if (personToRemove != null)
         {
-            people.Remove(personToRemove);
-            await SavePeopleAsync(people);
+            _existingPeople.Remove(personToRemove);
+            await SavePersonAsync();
         }
+    }
+    private async Task SavePersonAsync()
+    {
+        await _localStorage.SetItemAsync(StorageKey, _existingPeople);
     }
 }
