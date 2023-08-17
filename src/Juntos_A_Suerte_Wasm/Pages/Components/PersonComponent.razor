@@ -56,7 +56,7 @@
     public async Task New()
     {
         People = await personService.GetPeopleAsync();
-        notify.ShowNotification(title: "Restored", message: "It has refreshed successfully", NotificationSeverity.Info);
+        notify.ShowNotification(title: "Restaurado", message: "Se ha actualizado correctamente", NotificationSeverity.Info);
     }
 
     public async Task Save()
@@ -65,13 +65,13 @@
 
         Name = string.Empty;
         await Refresh();
-        notify.ShowNotification(title: "Saved", message: "It has been saved successfully", NotificationSeverity.Success);
+        notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
     }
 
     public async Task Delete(int personId)
     {
         await personService.DeletePersonAsync(personId);
         await Refresh();
-        notify.ShowNotification(title: "Removed", message: "Has been successfully removed", NotificationSeverity.Error);
+        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
     }
 }
