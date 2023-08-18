@@ -10,13 +10,10 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
-builder.Services.AddScoped<TooltipService>();
-builder.Services.AddScoped<ContextMenuService>();
 
 builder.Services.AddBlazoredLocalStorage();
-builder.Services.AddScoped<PersonService>(); // Register as a singleton
-builder.Services.AddScoped<TeamService>(); // Register as a singleton
+builder.Services.AddScoped<PersonService>();
+builder.Services.AddScoped<TeamService>();
 
 await builder.Build().RunAsync();
