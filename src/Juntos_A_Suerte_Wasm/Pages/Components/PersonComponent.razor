@@ -1,4 +1,5 @@
 ﻿@inject PersonService personService
+@inject NotificationService notify
 
 <div class="card">
     <div class="card-header">
@@ -52,17 +53,25 @@
         People = await personService.GetPeopleAsync();
     }
 
+    public async Task New()
+    {
+        People = await personService.GetPeopleAsync();
+        notify.ShowNotification(title: "Restaurado", message: "Se ha actualizado correctamente", NotificationSeverity.Info);
+    }
+
     public async Task Save()
     {
         await personService.SaveAsync(Name);
 
         Name = string.Empty;
         await Refresh();
+        notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
     }
 
     public async Task Delete(int personId)
     {
         await personService.DeletePersonAsync(personId);
         await Refresh();
+        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
     }
 }
