@@ -36,3 +36,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
         FOLDER: dist/Web/wwwroot
+
+# changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
+    - name: Change base-tag in index.html from / to Juntos_A_Suerte_Wasm
+      run: sed -i 's/<base href="\/" \/>/<base href="\/Juntos_A_Suerte_Wasm\/" \/>/g' dist/Web/wwwroot/index.html
+
+# add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    - name: Add .nojekyll file
+      run: touch dist/Web/wwwroot/.nojekyll
