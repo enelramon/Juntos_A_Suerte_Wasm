@@ -31,7 +31,7 @@ jobs:
       run: dotnet publish -c Release -o release --nologo 
   
      # changes the base-tag in index.html from '/' to 'DotNetDocsShowDemo' to match GitHub Pages repository subdirectory 
-    - name: Change base-tag in index.html from / to DotNetDocsShowDemo 
+    - name: Change base-tag in index.html from / to Juntos_A_Suerte_Wasm 
       run: sed -i 's/<base href="\/" \/>/<base href="\/Juntos_A_Suerte_Wasm\/" \/>/g' release/wwwroot/index.html 
   
      # copy index.html to 404.html to serve the same file when a file is not found 
