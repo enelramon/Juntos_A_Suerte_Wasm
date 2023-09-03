@@ -1,0 +1,26 @@
+@inject TeamService teamService
+
+<div class="p-1">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">@team.Name  <button class="bg-transparent border-0 text-body" @onclick="@(()=>Delete(@team.TeamId))">X</button></h4>
+            <hr />
+            @foreach (var person in team.Members)
+            {
+                <p class="card-text">@person.Name</p>
+            }
+
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public Team team { get; set; } = new Team();
+
+    public async Task Delete(int TeamId)
+    {
+        await teamService.DeleteTeamAsync(TeamId);
+    }
+}
