@@ -21,19 +21,7 @@
         <div class="form-control border-0 d-flex flex-wrap">
             @foreach (var team in Teams)
             {
-                  <div class="p-1">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">@team.Name  <button class="bg-transparent border-0 text-body" @onclick="@(()=>Delete(@team.TeamId))">X</button></h4>
-                            <hr />
-                            @foreach (var person in team.Members)
-                            {
-                                <p class="card-text">@person.Name</p>
-                            }
-
-                        </div>
-                    </div>
-                </div>
+                <TeamComponent Team="@team"></TeamComponent>
             }
 
         </div>
