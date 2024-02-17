@@ -49,6 +49,7 @@
     private async Task Refresh()
     {
         Teams = await teamService.GetTeamsAsync();
+        StateHasChanged();
     }
 
     public async Task Save()
