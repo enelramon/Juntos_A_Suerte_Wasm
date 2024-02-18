@@ -229,7 +229,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-KtlCpfM4MXwLbezlLU4NXfWXi4VPYmsxa\/bEB8KeFho=",
+      "hash": "sha256-g\/KsBhnvpD\/udqhzyXx4eoP+FI4dZweaHjGX4bV2JxU=",
       "url": "index.html"
     },
     {
@@ -633,5 +633,5 @@
       "url": "_content\/Radzen.Blazor\/Radzen.Blazor.js"
     }
   ],
-  "version": "dS2yzZMe"
+  "version": "Cefdk9ui"
 };
