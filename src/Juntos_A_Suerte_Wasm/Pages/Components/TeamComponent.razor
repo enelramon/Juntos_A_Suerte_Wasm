@@ -1,5 +1,3 @@
-@inject TeamService teamService
-
 <div class="p-1">
     <div class="card">
         <div class="card-body">
@@ -24,8 +22,6 @@
 
     public async Task Delete(int TeamId)
     {
-        await teamService.DeleteTeamAsync(TeamId);
-        
         if (OnTeamDeleted.HasDelegate)
         {
             await OnTeamDeleted.InvokeAsync(TeamId);
