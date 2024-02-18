@@ -19,8 +19,16 @@
     [Parameter]
     public Team team { get; set; } = new Team();
 
+    [Parameter]
+    public EventCallback<int> OnTeamDeleted { get; set; }
+
     public async Task Delete(int TeamId)
     {
         await teamService.DeleteTeamAsync(TeamId);
+        
+        if (OnTeamDeleted.HasDelegate)
+        {
+            await OnTeamDeleted.InvokeAsync(TeamId);
+        }
     }
 }
