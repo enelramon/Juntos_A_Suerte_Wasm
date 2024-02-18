@@ -47,7 +47,7 @@ jobs:
       run: touch release/wwwroot/.nojekyll 
   
     - name: Get version
-      run: echo "::set-env name=VERSION::$(git describe --tags --always)"
+      run: echo "VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
