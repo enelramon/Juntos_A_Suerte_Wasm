@@ -47,7 +47,7 @@ jobs:
       run: touch release/wwwroot/.nojekyll 
   
     - name: Get version
-      run: echo "VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
+      run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
 
     - name: Print version
