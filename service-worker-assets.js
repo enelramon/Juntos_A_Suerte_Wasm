@@ -261,7 +261,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-P4Flc4OksaZ3kooB2IcJeWLC8qQskTkl9FKbPBmbcD0=",
+      "hash": "sha256-\/BgvdqYmqq7mCNl2ubIEE+393Z9O9p08ufpXssajiAs=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -269,7 +269,7 @@
       "url": "_framework\/Blazored.LocalStorage.dll"
     },
     {
-      "hash": "sha256-6jDdNzCUT5cq3B7ITBDu\/Fvg+TNThoyICvHj6lWIFeg=",
+      "hash": "sha256-suZWbYT\/hBEW6rg1qRBpb0TnSxZxlA5+8E\/IYzwSWKk=",
       "url": "_framework\/Juntos_A_Suerte_Wasm.dll"
     },
     {
@@ -633,5 +633,5 @@
       "url": "_content\/Radzen.Blazor\/Radzen.Blazor.js"
     }
   ],
-  "version": "5SujWQlp"
+  "version": "G\/Nz8GCG"
 };
