@@ -49,6 +49,9 @@ jobs:
     - name: Get version
       run: echo "VERSION=$(git describe --tags --always)" >> $GITHUB_ENV
 
+    - name: Print version
+      run: echo "The new version is $VERSION"
+
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
