@@ -33,7 +33,8 @@ jobs:
     - name: Publish .NET Core Project 
       run: dotnet publish -c Release -o release --nologo 
   
-     # changes the base-tag in index.html from '/' to 'DotNetDocsShowDemo' to match GitHub Pages repository subdirectory 
+     # replacing / with /Juntos_A_Suerte_Wasm/, the command ensures that all relative links in the index.html file are interpreted within the context of the /Juntos_A_Suerte_Wasm/ subdirectory. This is necessary for a web application that resides within that subdirectory on a web server.
+ 
     - name: Change base-tag in index.html from / to Juntos_A_Suerte_Wasm 
       run: sed -i 's/<base href="\/" \/>/<base href="\/Juntos_A_Suerte_Wasm\/" \/>/g' release/wwwroot/index.html 
   
