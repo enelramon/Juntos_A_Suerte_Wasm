@@ -47,8 +47,10 @@ jobs:
       run: touch release/wwwroot/.nojekyll 
   
     - name: Commit wwwroot to GitHub Pages 
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        BRANCH: gh-pages 
-        FOLDER: release/wwwroot
-        
+      run: |
+        git config user.name "Enel Almonte"
+        git config user.email "enelramon@gmail.com"
+        git add release/wwwroot
+        version=$(git describe --tags --always)
+        git commit -m "Deploy $version to GitHub Pages"
+        git push origin main        
