@@ -46,11 +46,14 @@ jobs:
     - name: Add .nojekyll file 
       run: touch release/wwwroot/.nojekyll 
   
-    - name: Commit wwwroot to GitHub Pages 
-      run: |
-        git config user.name "Enel Almonte"
-        git config user.email "enelramon@gmail.com"
-        git add release/wwwroot
-        version=$(git describe --tags --always)
-        git commit -m "Deploy $version to GitHub Pages"
-        git push origin main        
+    - name: Get version
+      run: echo "::set-env name=VERSION::$(git describe --tags --always)"
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        BRANCH: gh-pages 
+        FOLDER: release/wwwroot
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VERSION: ${{ env.VERSION }}
