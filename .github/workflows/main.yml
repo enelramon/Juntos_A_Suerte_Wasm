@@ -16,7 +16,7 @@ jobs:
     # uses GitHub's checkout action to checkout code form the main branch
     - uses: actions/checkout@v2
     
-    # sets up .NET Core SDK 6.0.x
+    # sets up .NET Core SDK 7.0.x
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
@@ -26,13 +26,26 @@ jobs:
     - name: Install .NET WASM Build Tools
       run: dotnet workload install wasm-tools
 
-    # Publishes Blazor project to the release-folder
-    - name: Publish .NET Core Project
-      run: dotnet publish src/Juntos_A_Suerte_Wasm/Juntos_A_Suerte_Wasm.csproj -c:Release -p:GHPages=true -o dist/Web --nologo
-
-    - name: Commit wwwroot to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: dist/Web/wwwroot
+    # publishes Blazor project to the release-folder 
+    - name: Publish .NET Core Project 
+      run: dotnet publish -c Release -o release --nologo 
+  
+     # changes the base-tag in index.html from '/' to 'DotNetDocsShowDemo' to match GitHub Pages repository subdirectory 
+    - name: Change base-tag in index.html from / to DotNetDocsShowDemo 
+      run: sed -i 's/<base href="\/" \/>/<base href="\/Juntos_A_Suerte_Wasm\/" \/>/g' release/wwwroot/index.html 
+  
+     # copy index.html to 404.html to serve the same file when a file is not found 
+    - name: copy index.html to 404.html 
+      run: cp release/wwwroot/index.html release/wwwroot/404.html 
+  
+     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore) 
+    - name: Add .nojekyll file 
+      run: touch release/wwwroot/.nojekyll 
+  
+    - name: Commit wwwroot to GitHub Pages 
+      uses: JamesIves/github-pages-deploy-action@3.7.1 
+      with: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        BRANCH: gh-pages 
+        FOLDER: release/wwwroot
+        
