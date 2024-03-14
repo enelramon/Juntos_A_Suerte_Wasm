@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+src/Juntos_A_Suerte_Compose/gradle/wrapper/**
+src/Juntos_A_Suerte_Compose/.idea/**
