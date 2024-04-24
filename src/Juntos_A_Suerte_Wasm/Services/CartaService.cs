@@ -72,7 +72,12 @@ public class CartaService
         return pasantes;
     }
 
-
+    public async Task<List<RegistroPasante>> ListarPasantesAsync()
+    {
+        // Obtener todos los pasantes almacenados
+        var pasantes = await GetAllPasantesAsync();
+        return pasantes;
+    }
 }
 
 
