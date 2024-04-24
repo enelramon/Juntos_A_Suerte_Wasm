@@ -1,11 +1,12 @@
 ﻿@page "/PasanteIndex"
 
 @inject CartaService CartaService
+@inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.Forms
 
 <EditForm Model="ListaPasante" class="border shadow-lg p-3 rounded">
     <div class="card-header bg-primary text-white text-center py-2 rounded">
-        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta de Parientes</h3>
+        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta de Pasantes</h3>
     </div>
     <div class="card-body">
         <div class="row mb-3 align-items-end">
@@ -58,7 +59,7 @@
                     <td>@pasante.Matricula</td>
                     <td>@pasante.CantidadHoras</td>
                     <td>
-                        <a href="/EditClientes/@pasante.CodigoRegistro" style="border: none; background-color: transparent;" class="btn-editar">
+                        <a href="/PasanteEdit/@pasante.CodigoRegistro" style="border: none; background-color: transparent;" class="btn-editar">
                             <i class="bi bi-pen" style="font-size: 2rem;"></i>
                         </a>
 

@@ -1,4 +1,5 @@
-﻿@page "/RegistroPasante"
+﻿@page "/PasanteEdit"
+@page "/PasanteEdit/{PasanteID:int}"
 
 @inject CartaService CartaService
 @inject NavigationManager NavigationManager
@@ -7,9 +8,11 @@
 <EditForm Model="pasante" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
-        <div class="card-header bg-primary text-white d-flex justify-content-center align-items-center">
-            <h3 class="mb-0"> <i class="fas fa-clipboard-list"></i> Registro de Pasantes</h3>
+
+        <div class="card-header bg-primary text-white text-center py-2 rounded">
+            <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Editar Pasante</h3>
         </div>
+
         <div class="card-body">
 
             <div class="row">
@@ -87,6 +90,7 @@
             </div>
         </div>
 
+
         <div class="d-flex justify-content-center mb-3">
             <button type="submit" class="btn btn-outline-success ml-2" @onclick="Guardar">
                 <span><i class="bi bi-arrow-bar-down"></i></span> Guardar
@@ -99,20 +103,42 @@
             </a>
         </div>
 
-
-
     </div>
+    
 </EditForm>
 
 
 @code {
+
     public RegistroPasante pasante = new RegistroPasante();
 
-    private async Task Guardar()
+    [Parameter]
+    public int PasanteID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PasanteID > 0)
+        {
+            pasante.CodigoRegistro = PasanteID;
+            await Buscar();
+        }
+    }
+
+    public async Task Buscar()
+    {
+        var existe = await CartaService.GetPasanteAsync(pasante.CodigoRegistro);
+        if (existe != null)
+        {
+            pasante = existe;
+        }
+    }
+
+    public async Task Guardar()
     {
         await CartaService.SaveOrUpdatePasanteAsync(pasante);
         NavigationManager.NavigateTo("/PasanteIndex");
     }
+
 
 }
 
