@@ -38,12 +38,33 @@ public class CartaService
 
     public async Task SaveOrUpdatePasanteAsync(RegistroPasante pasante)
     {
-        // Obtener el siguiente codigo
-        pasante.CodigoRegistro = await GetNextCodigoRegistroAsync();
+        // Verificar si el pasante ya existe
+        var existingPasante = await GetPasanteAsync(pasante.CodigoRegistro);
 
-        // Guardar el pasante con el nuevo codigo
-        await _localStorage.SetItemAsync(GetStorageKey(pasante.CodigoRegistro), pasante);
+        if (existingPasante != null)
+        {
+            // Si el pasante existe, actualizar sus propiedades
+            existingPasante.Nombre = pasante.Nombre;
+            existingPasante.Apellido = pasante.Apellido;
+            existingPasante.Cedula = pasante.Cedula;
+            existingPasante.Carrera = pasante.Carrera;
+            existingPasante.Matricula = pasante.Matricula;
+            existingPasante.DiaFinal = pasante.DiaFinal;
+            existingPasante.DiaInicio = pasante.DiaInicio;
+            existingPasante.CantidadHoras = pasante.CantidadHoras;
+            existingPasante.Pasantia = pasante.Pasantia;
+
+            // Guardar el pasante actualizado
+            await _localStorage.SetItemAsync(GetStorageKey(pasante.CodigoRegistro), existingPasante);
+        }
+        else
+        {
+            // Si el pasante no existe, asignar un nuevo codigo de registro y guardarlo
+            pasante.CodigoRegistro = await GetNextCodigoRegistroAsync();
+            await _localStorage.SetItemAsync(GetStorageKey(pasante.CodigoRegistro), pasante);
+        }
     }
+
 
     private string GetStorageKey(int codigoRegistro)
     {
