@@ -47,6 +47,7 @@
     <PackageReference Include="bootstrap" Version="5.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.9" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="Radzen.Blazor" Version="4.15.4" />
   </ItemGroup>
 

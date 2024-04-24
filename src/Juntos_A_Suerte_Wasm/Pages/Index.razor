@@ -1,9 +1,14 @@
 ﻿@page "/"
 @inject TeamService teamService
 @inject PersonService personService
+@inject NavigationManager NavigationManager
 
 <div class="card">
-    <h5>Version 1.0.2</h5>
+    <div class="d-flex justify-content-between align-items-center">
+        <h5>Version 1.0.2</h5>
+        <NavLink class="btn btn-sm btn-info rounded-pill" href="/RegistroPasante">Registrar Pasante</NavLink>
+    </div>
+
     <div class="card-header">
         <h2 class="card-title text-center">GRUPOS</h2>
     </div>
