@@ -1,0 +1,97 @@
+﻿@page "/RegistroPasante"
+
+@inject CartaService CartaService
+@using Microsoft.AspNetCore.Components.Forms
+
+<EditForm Model="pasante">
+    <DataAnnotationsValidator />
+    <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
+        <div class="card-header bg-primary text-white d-flex justify-content-center align-items-center">
+            <h3 class="mb-0"> <i class="fas fa-clipboard-list"></i> Registro de Pasantes</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="Nombre" class="form-label"><strong>Nombre del Pasante:</strong></label>
+                    <div class="input-group">
+                        <InputText @bind-Value="pasante.Nombre" class="form-control" />
+                        <ValidationMessage For="@(() => pasante.Nombre)" />
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="Apellido" class="form-label"><strong>Apellido del Pasante:</strong></label>
+                    <div class="input-group">
+                        <InputText @bind-Value="pasante.Apellido" class="form-control" />
+                        <ValidationMessage For="@(() => pasante.Apellido)" />
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label for="Cedula" class="form-label"><strong>Cédula:</strong></label>
+                    <div class="input-group">
+                        <InputText @bind-Value="pasante.Cedula" class="form-control" />
+                        <ValidationMessage For="@(() => pasante.Cedula)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="Carrera" class="form-label"><strong>Carrera del Pasante:</strong></label>
+                    <div class="input-group">
+                        <InputText @bind-Value="pasante.Carrera" class="form-control" />
+                        <ValidationMessage For="@(() => pasante.Carrera)" />
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="Matricula" class="form-label"><strong>Matrícula del Pasante:</strong></label>
+                    <div class="input-group">
+                        <InputText @bind-Value="pasante.Matricula" class="form-control" />
+                        <ValidationMessage For="@(() => pasante.Matricula)" />
+                    </div>
+                </div>
+
+                <div class="col-md-4 position-relative">
+                    <label for="Pasantia" class="form-label"><strong>Pasantía del Pasante:</strong></label>
+                    <select @bind="pasante.Pasantia" class="form-select">
+                        <option value="Pasantia 1">Pasantía 1</option>
+                        <option value="Pasantia 2">Pasantía 2</option>
+                    </select>
+                    <ValidationMessage For="@(() => pasante.Pasantia)" />
+                    <div class="invalid-tooltip">Please select a pasantia.</div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="Cantidad" class="form-label"><strong>Cantidad de Horas:</strong></label>
+                    <InputNumber @bind-Value="pasante.CantidadHoras" class="form-control" />
+                    <ValidationMessage For="@(() => pasante.CantidadHoras)" />
+                </div>
+
+                <div class="col-md-4">
+                    <label for="DiaInicio" class="form-label"><strong>Día de inicio:</strong></label>
+                    <InputDate @bind-Value="pasante.DiaInicio" class="form-control" />
+                    <ValidationMessage For="@(() => pasante.DiaInicio)" />
+                </div>
+
+                <div class="col-md-4">
+                    <label for="DiaFinal" class="form-label"><strong>Día de finalización:</strong></label>
+                    <InputDate @bind-Value="pasante.DiaFinal" class="form-control" />
+                    <ValidationMessage For="@(() => pasante.DiaFinal)" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</EditForm>
+
+
+@code {
+     public RegistroPasante pasante = new RegistroPasante();
+
+   
+}
+
