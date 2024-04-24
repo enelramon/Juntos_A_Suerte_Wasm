@@ -16,7 +16,10 @@ public class RegistroPasante
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
 	public string? Cedula { get; set;}
 
-	[Required(ErrorMessage = "Este campo es Obligatorio")]
+    [Required(ErrorMessage = "Este campo es Obligatorio")]
+    public string? Carrera { get; set; }
+
+    [Required(ErrorMessage = "Este campo es Obligatorio")]
 	public string? Matricula { get; set; }
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
