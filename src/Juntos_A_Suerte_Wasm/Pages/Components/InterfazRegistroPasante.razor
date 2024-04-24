@@ -3,13 +3,14 @@
 @inject CartaService CartaService
 @using Microsoft.AspNetCore.Components.Forms
 
-<EditForm Model="pasante">
+<EditForm Model="pasante" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
         <div class="card-header bg-primary text-white d-flex justify-content-center align-items-center">
             <h3 class="mb-0"> <i class="fas fa-clipboard-list"></i> Registro de Pasantes</h3>
         </div>
         <div class="card-body">
+
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="Nombre" class="form-label"><strong>Nombre del Pasante:</strong></label>
@@ -85,13 +86,24 @@
             </div>
         </div>
 
+        <div class="d-flex justify-content-center mb-3">
+            <button type="submit" class="btn btn-outline-success ml-2" @onclick="Guardar">
+                <span></span> Guardar
+            </button>
+        </div>
+
+
     </div>
 </EditForm>
 
 
 @code {
-     public RegistroPasante pasante = new RegistroPasante();
+    public RegistroPasante pasante = new RegistroPasante();
 
-   
+    private async Task Guardar()
+    {
+        await CartaService.SaveOrUpdatePasanteAsync(pasante);
+    }
+
 }
 
