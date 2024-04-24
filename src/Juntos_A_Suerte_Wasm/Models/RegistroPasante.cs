@@ -33,4 +33,6 @@ public class RegistroPasante
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
 	public int CantidadHoras { get; set; }
+
+	public DateTime Expide {  get; set; } = DateTime.Now;
 }
