@@ -35,6 +35,12 @@ public class CartaService
         return maxCodigo + 1;
     }
 
+    public async Task<RegistroPasante?> GetPasanteAsyncNew()
+    {
+        var pasantes = await GetAllPasantesAsync();
+        return pasantes.FirstOrDefault();
+    }
+
 
     public async Task SaveOrUpdatePasanteAsync(RegistroPasante pasante)
     {
