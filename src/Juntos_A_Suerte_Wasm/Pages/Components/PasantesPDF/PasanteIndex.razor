@@ -65,14 +65,16 @@
 
                     </td>
                     <td>
-                        <a href="/DetailsClientes/@pasante.CodigoRegistro" style="border: none; background-color: transparent;" class="btn-detalle">
+                        <button @onclick="(async () => await Imprimir(pasante.CodigoRegistro))" class="btn-imprimir btn btn-outline-primary">
                             <i class="bi bi-printer-fill" style="font-size: 2rem;"></i>
-                        </a>
+                        </button>
                     </td>
+
                 </tr>
             }
         </tbody>
     </table>
+
 </EditForm>
 
 @code {
@@ -126,6 +128,13 @@
         {
             ListaPasante = await CartaService.GetAllPasantesAsync();
         }
+
+    }
+
+
+    private async Task Imprimir(int codigoRegistro)
+    {
+        NavigationManager.NavigateTo($"/PasanteImprimir/{codigoRegistro}");
     }
 
 }
