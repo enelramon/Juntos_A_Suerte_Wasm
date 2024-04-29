@@ -1,4 +1,5 @@
 ﻿@page "/RegistroPasante"
+@page "/RegistroPasante/{PasanteID}"
 
 @inject CartaService CartaService
 @inject NavigationManager NavigationManager
@@ -103,6 +104,13 @@
             <a type="button" href="/PasanteIndex/" class="btn btn-outline-danger">
                 <i class="bi bi-house-fill"></i> Home
             </a>
+
+            <span class="mx-2"></span>
+
+            <button type="submit" class="btn btn-outline-success ml-2" @onclick="GuardarImprimir">
+                <span><i class="bi bi-arrow-bar-down"></i></span> Guardar e Imprimir
+            </button>
+
         </div>
 
 
@@ -114,6 +122,9 @@
 @code {
     public RegistroPasante pasante = new RegistroPasante();
     private string errorMessage = "";
+
+    [Parameter]
+    public int PasanteID{ get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -147,6 +158,32 @@
         await CartaService.SaveOrUpdatePasanteAsync(pasante);
         NavigationManager.NavigateTo("/PasanteIndex");
     }
+
+    private async Task GuardarImprimir()
+    {
+        if (string.IsNullOrWhiteSpace(pasante.Nombre) ||
+            string.IsNullOrWhiteSpace(pasante.Apellido) ||
+            string.IsNullOrWhiteSpace(pasante.Cedula) ||
+            string.IsNullOrWhiteSpace(pasante.Carrera) ||
+            string.IsNullOrWhiteSpace(pasante.Matricula) ||
+            pasante.DiaInicio == default ||
+            pasante.DiaFinal == default)
+        {
+            errorMessage = "Por favor, complete todos los campos obligatorios.";
+            return;
+        }
+
+        if (pasante.DiaFinal <= pasante.DiaInicio)
+        {
+            errorMessage = "La fecha de finalización debe ser posterior a la fecha de inicio.";
+            return;
+        }
+
+        errorMessage = "";
+        await CartaService.SaveOrUpdatePasanteAsync(pasante);
+        NavigationManager.NavigateTo($"/PasanteImprimir/{pasante.CodigoRegistro}");
+    }
+
 
 
 }
