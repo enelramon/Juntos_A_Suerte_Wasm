@@ -25,7 +25,144 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+
+
+    <!--Parte del PDF-->
+    <script>
+        window.GenerarPDF = async (pasante) => {
+            var pasantejson = JSON.parse(pasante);
+
+            var pdf = new jsPDF();
+
+            // Crear un objeto Image para el encabezado
+            var imgEncabezado = new Image();
+
+            // Cargar la imagen del encabezado
+            imgEncabezado.src = "encabezado.png"; // Ruta relativa desde la carpeta wwwroot
+
+            // Evento onload para asegurar que la imagen del encabezado se cargue antes de agregarla al PDF
+            imgEncabezado.onload = function () {
+                // Agregar la imagen del encabezado al PDF
+                pdf.addImage(imgEncabezado, 'PNG', -5, 0, 215, 70); // Ajusta las coordenadas y el tamaño según tus necesidades
+
+                // Crear un objeto Image para el pie de página
+                var imgPieDePagina = new Image();
+
+                // Cargar la imagen del pie de página
+                imgPieDePagina.src = "pieDePagina.jpg"; // Ruta relativa desde la carpeta wwwroot
+
+                // Evento onload para asegurar que la imagen del pie de página se cargue antes de agregarla al PDF
+                imgPieDePagina.onload = async function () {
+                    // Agregar la imagen del pie de página al PDF
+                    pdf.addImage(imgPieDePagina, 0, pdf.internal.pageSize.height - 30, 210, 30); // Ajusta las coordenadas y el tamaño según tus necesidades
+
+                    // Crear un objeto Image para el título
+                    var imgTitulo = new Image();
+
+                    // Cargar la imagen del título
+                    imgTitulo.src = "titulo.png"; // Ruta relativa desde la carpeta wwwroot
+
+                    // Evento onload para asegurar que la imagen del título se cargue antes de agregarla al PDF
+                    imgTitulo.onload = async function () {
+                        // Agregar la imagen del título al PDF
+                        pdf.addImage(imgTitulo, 'PNG', 35, 40, 150, 30); // Ajusta las coordenadas y el tamaño según tus necesidades
+
+                        // Generar el contenido del PDF
+                        pdf.setFont("times"); // Cambiar la fuente a "times"
+                        pdf.setFontSize(14); // Establecer el tamaño de la fuente en 14
+                        pdf.setTextColor(0, 0, 0); // Color negro
+
+                        // Texto de la carta
+                        var textoCarta = `Mediante la presente Acta se Certifica que el estudiante ${pasantejson.Nombre} ${pasantejson.Apellido}, titular de la cédula de identidad Nº ${pasantejson.Cedula}, estudiante de la carrera de ${pasantejson.Carrera}, matrícula ${pasantejson.Matricula}, de la Universidad Católica Nordestana de San Francisco de Macorís, desempeñó y desarrolló satisfactoriamente la totalidad de las Actividades y Tareas programadas en su plan de Actividades durante su ${pasantejson.Pasantia} en esta Empresa, efectuada y concluida en el período comprendido desde el día ${formatDate(new Date(pasantejson.DiaInicio))} hasta el ${formatDate(new Date(pasantejson.DiaFinal))}, ambas fechas inclusive. Acumulando un total de ${pasantejson.CantidadHoras} horas de prácticas. Este certificado se expide a solicitud de la parte interesada, a los tres (03) días del mes de ${formatMonthAndYear(new Date(pasantejson.Expide))}.`;
+
+                        // Dividir el texto en líneas
+                        var lineasTexto = pdf.splitTextToSize(textoCarta, 180);
+
+                        // Definir la posición inicial para el texto
+                        var y = 100;
+
+                        // Iterar sobre las líneas de texto
+                        lineasTexto.forEach(function (linea) {
+                            // Agregar la línea de texto al PDF con justificación
+                            pdf.text(linea, 20, y, { align: 'justify' });
+                            // Aumentar la posición Y para la siguiente línea de texto
+                            y += 10; // Espacio entre líneas
+                        });
+
+                        // Agregar el segundo texto
+                        var segundoTexto = "Chief Information Officer";
+                        pdf.setFont("times"); // Establecer la fuente normal
+                        pdf.setFontSize(12); // Tamaño de fuente normal para el segundo texto
+                        var xSegundoTexto = pdf.internal.pageSize.width / 2 - 22; // Mover el texto 50 unidades hacia la izquierda
+                        pdf.text(segundoTexto, xSegundoTexto, y + 27, { align: 'center' }); // Espacio adicional después del nombre
+
+                        // Agregar el nombre del Licenciado en negrita y centrado
+                        var nombreLic = "LIC. ENEL R. ALMONTE P.";
+                        pdf.setFont("times", "bold"); // Establecer la fuente en negrita
+                        pdf.setFontSize(14); // Tamaño de fuente más grande para el nombre
+                        var xNombre = pdf.internal.pageSize.width / 2 - 30; // Mover el texto 10 unidades hacia la izquierda
+                        pdf.text(nombreLic, xNombre, y + 20, { align: 'center' }); // Espacio adicional después del contenido de la carta
+
+                        // Guardar el PDF después de que se hayan agregado todas las imágenes y texto
+                        pdf.save('CertificadoDePasante.pdf');
+
+                        console.log(pasantejson);
+                    };
+                };
+            };
+        }
+
+        function formatDate(date) {
+         
+            var day = date.getDate();
+            var month = date.getMonth() + 1; 
+            var year = date.getFullYear();
+
+            var formattedDate = (day < 10 ? '0' : '') + day + "-" + (month < 10 ? '0' : '') + month + "-" + year; 
+
+            return formattedDate;
+        }
+
+        function formatMonthAndYear(date) {
+            var months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            var month = months[date.getMonth()];
+            var year = date.getFullYear();
+
+            var formattedDate = month + " " + year;
+
+            return formattedDate;
+        }
+
+
+    </script>
+
+
+
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
 </body>
 
 </html>
