@@ -83,6 +83,12 @@
                     <label for="DiaFinal" class="form-label"><strong>Día de finalización:</strong></label>
                     <InputDate @bind-Value="pasante.DiaFinal" class="form-control" />
                     <ValidationMessage For="@(() => pasante.DiaFinal)" />
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @errorMessage
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -107,12 +113,41 @@
 
 @code {
     public RegistroPasante pasante = new RegistroPasante();
+    private string errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        pasante.Pasantia = "Pasantía 1";
+        pasante.DiaInicio = DateTime.Today;
+        pasante.DiaFinal = DateTime.Today;
+        pasante.Expide = DateTime.Today;
+    }
 
     private async Task Guardar()
     {
+        if (string.IsNullOrWhiteSpace(pasante.Nombre) ||
+            string.IsNullOrWhiteSpace(pasante.Apellido) ||
+            string.IsNullOrWhiteSpace(pasante.Cedula) ||
+            string.IsNullOrWhiteSpace(pasante.Carrera) ||
+            string.IsNullOrWhiteSpace(pasante.Matricula) ||
+            pasante.DiaInicio == default ||
+            pasante.DiaFinal == default)
+        {
+            errorMessage = "Por favor, complete todos los campos obligatorios.";
+            return;
+        }
+
+        if (pasante.DiaFinal <= pasante.DiaInicio)
+        {
+            errorMessage = "La fecha de finalización debe ser posterior a la fecha de inicio.";
+            return;
+        }
+
+        errorMessage = "";
         await CartaService.SaveOrUpdatePasanteAsync(pasante);
         NavigationManager.NavigateTo("/PasanteIndex");
     }
+
 
 }
 
