@@ -28,13 +28,13 @@ public class Pasantes
 	public string? Pasantia { get; set; }
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
-	public DateTime? DiaInicio { get; set; } = DateTime.Now;
+	public DateTime? FechaInicio { get; set; } = DateTime.Now;
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
-	public DateTime DiaFinal { get; set; } = DateTime.Now;
+	public DateTime FechaFinal { get; set; } = DateTime.Now;
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
 	public int CantidadHoras { get; set; }
 
-	public DateTime Expide {  get; set; } = DateTime.Now;
+	public DateTime FechaExpide {  get; set; } = DateTime.Now;
 }

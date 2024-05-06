@@ -18,7 +18,7 @@
     protected override async Task OnInitializedAsync()
     {
         pasante = await CartaService.GetPasanteAsync(PasanteID);
-        pasante.Expide = DateTime.Today;
+        pasante.FechaExpide = DateTime.Today;
     }
 
     private async Task export()

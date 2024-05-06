@@ -69,15 +69,15 @@
             <div class="row mb-3">
 
                 <div class="col-md-4">
-                    <label for="DiaInicio" class="form-label"><strong>Día de inicio:</strong></label>
-                    <InputDate @bind-Value="pasante.DiaInicio" class="form-control" />
-                    <ValidationMessage For="@(() => pasante.DiaInicio)" />
+                    <label for="DiaInicio" class="form-label"><strong>Fecha de inicio:</strong></label>
+                    <InputDate @bind-Value="pasante.FechaInicio" class="form-control" />
+                    <ValidationMessage For="@(() => pasante.FechaInicio)" />
                 </div>
 
                 <div class="col-md-4">
-                    <label for="DiaFinal" class="form-label"><strong>Día de finalización:</strong></label>
-                    <InputDate @bind-Value="pasante.DiaFinal" class="form-control" />
-                    <ValidationMessage For="@(() => pasante.DiaFinal)" />
+                    <label for="DiaFinal" class="form-label"><strong>Fecha de finalización:</strong></label>
+                    <InputDate @bind-Value="pasante.FechaFinal" class="form-control" />
+                    <ValidationMessage For="@(() => pasante.FechaFinal)" />
                     @if (!string.IsNullOrEmpty(errorMessage))
                     {
                         <div class="alert alert-danger" role="alert">
@@ -124,9 +124,9 @@
     protected override async Task OnInitializedAsync()
     {
         pasante.Pasantia = "Pasantía 1";
-        pasante.DiaInicio = DateTime.Today;
-        pasante.DiaFinal = DateTime.Today;
-        pasante.Expide = DateTime.Today;
+        pasante.FechaInicio = DateTime.Today;
+        pasante.FechaFinal = DateTime.Today;
+        pasante.FechaExpide = DateTime.Today;
     }
 
     private async Task Guardar()
@@ -135,14 +135,14 @@
             string.IsNullOrWhiteSpace(pasante.Cedula) ||
             string.IsNullOrWhiteSpace(pasante.Carrera) ||
             string.IsNullOrWhiteSpace(pasante.Matricula) ||
-            pasante.DiaInicio == default ||
-            pasante.DiaFinal == default)
+            pasante.FechaInicio == default ||
+            pasante.FechaFinal == default)
         {
             errorMessage = "Por favor, complete todos los campos obligatorios.";
             return;
         }
 
-        if (pasante.DiaFinal <= pasante.DiaInicio)
+        if (pasante.FechaFinal <= pasante.FechaInicio)
         {
             errorMessage = "La fecha de finalización debe ser posterior a la fecha de inicio.";
             return;
@@ -159,14 +159,14 @@
             string.IsNullOrWhiteSpace(pasante.Cedula) ||
             string.IsNullOrWhiteSpace(pasante.Carrera) ||
             string.IsNullOrWhiteSpace(pasante.Matricula) ||
-            pasante.DiaInicio == default ||
-            pasante.DiaFinal == default)
+            pasante.FechaInicio == default ||
+            pasante.FechaFinal == default)
         {
             errorMessage = "Por favor, complete todos los campos obligatorios.";
             return;
         }
 
-        if (pasante.DiaFinal <= pasante.DiaInicio)
+        if (pasante.FechaFinal <= pasante.FechaInicio)
         {
             errorMessage = "La fecha de finalización debe ser posterior a la fecha de inicio.";
             return;

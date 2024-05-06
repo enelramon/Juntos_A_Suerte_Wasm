@@ -54,8 +54,8 @@ public class CartaService
             existingPasante.Cedula = pasante.Cedula;
             existingPasante.Carrera = pasante.Carrera;
             existingPasante.Matricula = pasante.Matricula;
-            existingPasante.DiaFinal = pasante.DiaFinal;
-            existingPasante.DiaInicio = pasante.DiaInicio;
+            existingPasante.FechaInicio = pasante.FechaInicio;
+            existingPasante.FechaFinal = pasante.FechaFinal;
             existingPasante.CantidadHoras = pasante.CantidadHoras;
             existingPasante.Pasantia = pasante.Pasantia;
 
