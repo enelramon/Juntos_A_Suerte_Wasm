@@ -8,11 +8,11 @@ public class Pasantes
 	public int PasanteId {  get; set; }
 
 	[Required(ErrorMessage ="Este campo es Obligatorio")]
-    [RegularExpression(@"^[A-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "El Apellido debe comenzar con una letra mayúscula y no debe contener números.")]
+    [RegularExpression(@"^[a-zA-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "El Apellido debe comenzar con una letra mayúscula y no debe contener números.")]
     public string? Nombre { get; set; }
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
-    [RegularExpression(@"^[A-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "El Apellido debe comenzar con una letra mayúscula y no debe contener números.")]
+    [RegularExpression(@"^[a-zA-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "El Apellido debe comenzar con una letra mayúscula y no debe contener números.")]
     public string? Apellido { get; set; }
 
 	[Required(ErrorMessage = "Este campo es Obligatorio")]
@@ -20,7 +20,7 @@ public class Pasantes
     public string? Cedula { get; set;}
 
     [Required(ErrorMessage = "Este campo es Obligatorio")]
-    [RegularExpression(@"^[A-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "La Carrera debe comenzar con una letra mayúscula y no debe contener números.")]
+    [RegularExpression(@"^[a-zA-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "La Carrera debe comenzar con una letra mayúscula y no debe contener números.")]
 
     public string? Carrera { get; set; }
 

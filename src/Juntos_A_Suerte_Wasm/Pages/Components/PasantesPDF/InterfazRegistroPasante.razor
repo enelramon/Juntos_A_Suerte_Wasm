@@ -17,7 +17,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="Nombre" class="form-label"><strong>Nombre del Pasante:</strong></label>
                     <div class="input-group">
-                        <InputText @bind-Value="pasante.Nombre" class="form-control" />
+                        <InputText @bind-Value="pasante.Nombre" @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
                         <ValidationMessage For="@(() => pasante.Nombre)" />
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="Apellido" class="form-label"><strong>Apellido del Pasante:</strong></label>
                     <div class="input-group">
-                        <InputText @bind-Value="pasante.Apellido" class="form-control" />
+                        <InputText @bind-Value="pasante.Apellido"  @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
                         <ValidationMessage For="@(() => pasante.Apellido)" />
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="col-md-4">
                     <label for="Carrera" class="form-label"><strong>Carrera del Pasante:</strong></label>
                     <div class="input-group">
-                        <InputText @bind-Value="pasante.Carrera" class="form-control" />
+                        <InputText @bind-Value="pasante.Carrera" @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
                         <ValidationMessage For="@(() => pasante.Carrera)" />
                     </div>
                 </div>
@@ -116,6 +116,7 @@
 
 
     </div>
+
 </EditForm>
 
 
@@ -184,7 +185,15 @@
         NavigationManager.NavigateTo($"/PasanteImprimir/{pasante.PasanteId}");
     }
 
+    private async Task CapitalizarPrimeraLetraHandler(ChangeEventArgs e)
+    {
+        string valor = e.Value.ToString();
 
-
+        if (!string.IsNullOrEmpty(valor))
+        {
+            pasante.Nombre = char.ToUpper(valor[0]) + valor.Substring(1);
+        }
+    }
+    
 }
 
