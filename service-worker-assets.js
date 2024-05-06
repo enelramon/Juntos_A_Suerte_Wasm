@@ -233,7 +233,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-eJF1TH1q5+EmBcbLSNoEiZwkl\/DhenT7OHCQbUmDFTA=",
+      "hash": "sha256-kXe6TFR5+vzuXfxYSH\/7PHnL8gg2aGzZUw\/\/9blAKu8=",
       "url": "index.html"
     },
     {
@@ -273,7 +273,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-xRhDzdzQxlIKldSEN8pAshBqgRCkyZTSNLS\/J5PSiFs=",
+      "hash": "sha256-8uwg7n+9QF7XW4XXthHEaMCPXAn+e+RCsYzqWTJbTLg=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -289,7 +289,7 @@
       "url": "_framework\/iTextSharp.LGPLv2.Core.dll"
     },
     {
-      "hash": "sha256-5HXNhp7qzWhSlBwHU+t8sAzrNKUT9zi8+VN6JK5VtG4=",
+      "hash": "sha256-lX\/jEZcyFrlmxOkhy5QTBhqLZEuSR7xhoioLgZ7jQT8=",
       "url": "_framework\/Juntos_A_Suerte_Wasm.dll"
     },
     {
@@ -949,5 +949,5 @@
       "url": "_content\/Radzen.Blazor\/Radzen.Blazor.js"
     }
   ],
-  "version": "udhemAyZ"
+  "version": "Kp0udVvV"
 };
