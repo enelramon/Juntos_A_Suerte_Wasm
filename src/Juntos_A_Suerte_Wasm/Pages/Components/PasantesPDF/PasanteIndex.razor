@@ -79,9 +79,9 @@
 
 @code {
 
-    public RegistroPasante pasante = new RegistroPasante();
+    public Pasantes pasante = new Pasantes();
 
-    public List<RegistroPasante> ListaPasante = new List<RegistroPasante>();
+    public List<Pasantes> ListaPasante = new List<Pasantes>();
 
     private string filtro = "id";
     private string valorFiltro = "";
@@ -106,11 +106,11 @@
                 var pasante = await CartaService.GetPasanteAsync(codigoRegistro);
                 if (pasante != null)
                 {
-                    ListaPasante = new List<RegistroPasante> { pasante };
+                    ListaPasante = new List<Pasantes> { pasante };
                 }
                 else
                 {
-                    ListaPasante = new List<RegistroPasante>();
+                    ListaPasante = new List<Pasantes>();
                 }
             }
             else if (filtro == "nombre")

@@ -12,9 +12,9 @@ public class CartaService
         _localStorage = localStorage;
     }
 
-    public async Task<RegistroPasante?> GetPasanteAsync(int codigoRegistro)
+    public async Task<Pasantes?> GetPasanteAsync(int codigoRegistro)
     {
-        return await _localStorage.GetItemAsync<RegistroPasante>(GetStorageKey(codigoRegistro));
+        return await _localStorage.GetItemAsync<Pasantes>(GetStorageKey(codigoRegistro));
     }
 
     public async Task<int> GetNextCodigoRegistroAsync()
@@ -35,14 +35,14 @@ public class CartaService
         return maxCodigo + 1;
     }
 
-    public async Task<RegistroPasante?> GetPasanteAsyncNew()
+    public async Task<Pasantes?> GetPasanteAsyncNew()
     {
         var pasantes = await GetAllPasantesAsync();
         return pasantes.FirstOrDefault();
     }
 
 
-    public async Task SaveOrUpdatePasanteAsync(RegistroPasante pasante)
+    public async Task SaveOrUpdatePasanteAsync(Pasantes pasante)
     {
         // Verificar si el pasante ya existe
         var existingPasante = await GetPasanteAsync(pasante.CodigoRegistro);
@@ -77,7 +77,7 @@ public class CartaService
         return $"{StorageKey}_{codigoRegistro}";
     }
 
-    public async Task<List<RegistroPasante>> GetAllPasantesAsync()
+    public async Task<List<Pasantes>> GetAllPasantesAsync()
     {
         // Obtener todas las claves almacenadas en LocalStorage
         var keys = await _localStorage.KeysAsync();
@@ -86,10 +86,10 @@ public class CartaService
         var pasanteKeys = keys.Where(key => key.StartsWith(StorageKey));
 
         // Recuperar los pasantes
-        var pasantes = new List<RegistroPasante>();
+        var pasantes = new List<Pasantes>();
         foreach (var key in pasanteKeys)
         {
-            var pasante = await _localStorage.GetItemAsync<RegistroPasante>(key);
+            var pasante = await _localStorage.GetItemAsync<Pasantes>(key);
             if (pasante != null)
             {
                 pasantes.Add(pasante);
@@ -99,7 +99,7 @@ public class CartaService
         return pasantes;
     }
 
-    public async Task<List<RegistroPasante>> ListarPasantesAsync()
+    public async Task<List<Pasantes>> ListarPasantesAsync()
     {
         // Obtener todos los pasantes almacenados
         var pasantes = await GetAllPasantesAsync();

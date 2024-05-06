@@ -2,7 +2,7 @@
 
 namespace Juntos_A_Suerte_Wasm.Models;
 
-public class RegistroPasante
+public class Pasantes
 {
 	[Key]
 	public int CodigoRegistro {  get; set; }
