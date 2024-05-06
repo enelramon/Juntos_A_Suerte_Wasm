@@ -17,7 +17,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="Nombre" class="form-label"><strong>Nombres del Pasante:</strong></label>
                     <div class="input-group">
-                        <InputText @bind-Value="pasante.Nombres" @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
+                        <InputText @bind-Value="pasante.Nombres" @oninput="CapitalizarNombreLetraHandler" class="form-control" />
                         <ValidationMessage For="@(() => pasante.Nombres)" />
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                 <div class="col-md-4">
                     <label for="Carrera" class="form-label"><strong>Carrera del Pasante:</strong></label>
                     <div class="input-group">
-                        <InputText @bind-Value="pasante.Carrera" @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
+                        <InputText @bind-Value="pasante.Carrera" @oninput="CapitalizarCarreraLetraHandler" class="form-control" />
                         <ValidationMessage For="@(() => pasante.Carrera)" />
                     </div>
                 </div>
@@ -177,7 +177,7 @@
         NavigationManager.NavigateTo($"/PasanteImprimir/{pasante.PasanteId}");
     }
 
-    private async Task CapitalizarPrimeraLetraHandler(ChangeEventArgs e)
+    private async Task CapitalizarNombreLetraHandler(ChangeEventArgs e)
     {
         string valor = e.Value.ToString();
 
@@ -186,6 +186,16 @@
             pasante.Nombres = char.ToUpper(valor[0]) + valor.Substring(1);
         }
     }
-    
+
+    private async Task CapitalizarCarreraLetraHandler(ChangeEventArgs e)
+    {
+        string valor = e.Value.ToString();
+
+        if (!string.IsNullOrEmpty(valor))
+        {
+            pasante.Carrera = char.ToUpper(valor[0]) + valor.Substring(1);
+        }
+    }
+
 }
 
