@@ -52,20 +52,20 @@
             @foreach (var pasante in ListaPasante)
             {
                 <tr>
-                    <td>@pasante.CodigoRegistro</td>
+                    <td>@pasante.PasanteId</td>
                     <td>@pasante.Nombre</td>
                     <td>@pasante.Apellido</td>
                     <td>@pasante.Cedula</td>
                     <td>@pasante.Matricula</td>
                     <td>@pasante.CantidadHoras</td>
                     <td>
-                        <a href="/PasanteEdit/@pasante.CodigoRegistro" style="border: none; background-color: transparent;" class="btn-editar">
+                        <a href="/PasanteEdit/@pasante.PasanteId" style="border: none; background-color: transparent;" class="btn-editar">
                             <i class="bi bi-pen" style="font-size: 2rem;"></i>
                         </a>
 
                     </td>
                     <td>
-                        <button @onclick="(async () => await Imprimir(pasante.CodigoRegistro))" class="btn-imprimir btn btn-outline-primary">
+                        <button @onclick="(async () => await Imprimir(pasante.PasanteId))" class="btn-imprimir btn btn-outline-primary">
                             <i class="bi bi-printer-fill" style="font-size: 2rem;"></i>
                         </button>
                     </td>

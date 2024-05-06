@@ -119,14 +119,14 @@
     {
         if (PasanteID > 0)
         {
-            pasante.CodigoRegistro = PasanteID;
+            pasante.PasanteId = PasanteID;
             await Buscar();
         }
     }
 
     public async Task Buscar()
     {
-        var existe = await CartaService.GetPasanteAsync(pasante.CodigoRegistro);
+        var existe = await CartaService.GetPasanteAsync(pasante.PasanteId);
         if (existe != null)
         {
             pasante = existe;

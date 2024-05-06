@@ -181,7 +181,7 @@
 
         errorMessage = "";
         await CartaService.SaveOrUpdatePasanteAsync(pasante);
-        NavigationManager.NavigateTo($"/PasanteImprimir/{pasante.CodigoRegistro}");
+        NavigationManager.NavigateTo($"/PasanteImprimir/{pasante.PasanteId}");
     }
 
 

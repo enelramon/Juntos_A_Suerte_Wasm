@@ -12,9 +12,9 @@ public class CartaService
         _localStorage = localStorage;
     }
 
-    public async Task<Pasantes?> GetPasanteAsync(int codigoRegistro)
+    public async Task<Pasantes?> GetPasanteAsync(int PasanteId)
     {
-        return await _localStorage.GetItemAsync<Pasantes>(GetStorageKey(codigoRegistro));
+        return await _localStorage.GetItemAsync<Pasantes>(GetStorageKey(PasanteId));
     }
 
     public async Task<int> GetNextCodigoRegistroAsync()
@@ -29,7 +29,7 @@ public class CartaService
         }
 
         // Encontrar el maximo valor
-        int maxCodigo = pasantes.Max(p => p.CodigoRegistro);
+        int maxCodigo = pasantes.Max(p => p.PasanteId);
 
         // Incrementar
         return maxCodigo + 1;
@@ -45,7 +45,7 @@ public class CartaService
     public async Task SaveOrUpdatePasanteAsync(Pasantes pasante)
     {
         // Verificar si el pasante ya existe
-        var existingPasante = await GetPasanteAsync(pasante.CodigoRegistro);
+        var existingPasante = await GetPasanteAsync(pasante.PasanteId);
 
         if (existingPasante != null)
         {
@@ -61,20 +61,20 @@ public class CartaService
             existingPasante.Pasantia = pasante.Pasantia;
 
             // Guardar el pasante actualizado
-            await _localStorage.SetItemAsync(GetStorageKey(pasante.CodigoRegistro), existingPasante);
+            await _localStorage.SetItemAsync(GetStorageKey(pasante.PasanteId), existingPasante);
         }
         else
         {
             // Si el pasante no existe, asignar un nuevo codigo de registro y guardarlo
-            pasante.CodigoRegistro = await GetNextCodigoRegistroAsync();
-            await _localStorage.SetItemAsync(GetStorageKey(pasante.CodigoRegistro), pasante);
+            pasante.PasanteId = await GetNextCodigoRegistroAsync();
+            await _localStorage.SetItemAsync(GetStorageKey(pasante.PasanteId), pasante);
         }
     }
 
 
-    private string GetStorageKey(int codigoRegistro)
+    private string GetStorageKey(int PasanteId)
     {
-        return $"{StorageKey}_{codigoRegistro}";
+        return $"{StorageKey}_{PasanteId}";
     }
 
     public async Task<List<Pasantes>> GetAllPasantesAsync()

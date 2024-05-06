@@ -5,7 +5,7 @@ namespace Juntos_A_Suerte_Wasm.Models;
 public class Pasantes
 {
 	[Key]
-	public int CodigoRegistro {  get; set; }
+	public int PasanteId {  get; set; }
 
 	[Required(ErrorMessage ="Este campo es Obligatorio")]
     [RegularExpression(@"^[A-ZÁÉÍÓÚÑ][a-zA-ZÁÉÍÓÚÑ ]*$", ErrorMessage = "El Apellido debe comenzar con una letra mayúscula y no debe contener números.")]
