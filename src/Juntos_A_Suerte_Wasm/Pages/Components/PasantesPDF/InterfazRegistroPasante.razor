@@ -15,18 +15,10 @@
 
             <div class="row">
                 <div class="col-md-4 mb-3">
-                    <label for="Nombre" class="form-label"><strong>Nombre del Pasante:</strong></label>
+                    <label for="Nombre" class="form-label"><strong>Nombres del Pasante:</strong></label>
                     <div class="input-group">
-                        <InputText @bind-Value="pasante.Nombre" @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
-                        <ValidationMessage For="@(() => pasante.Nombre)" />
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label for="Apellido" class="form-label"><strong>Apellido del Pasante:</strong></label>
-                    <div class="input-group">
-                        <InputText @bind-Value="pasante.Apellido"  @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
-                        <ValidationMessage For="@(() => pasante.Apellido)" />
+                        <InputText @bind-Value="pasante.Nombres" @oninput="CapitalizarPrimeraLetraHandler" class="form-control" />
+                        <ValidationMessage For="@(() => pasante.Nombres)" />
                     </div>
                 </div>
 
@@ -37,9 +29,7 @@
                         <ValidationMessage For="@(() => pasante.Cedula)" />
                     </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="Carrera" class="form-label"><strong>Carrera del Pasante:</strong></label>
                     <div class="input-group">
@@ -47,7 +37,10 @@
                         <ValidationMessage For="@(() => pasante.Carrera)" />
                     </div>
                 </div>
+            </div>
 
+            <div class="row mb-3">
+          
                 <div class="col-md-4">
                     <label for="Matricula" class="form-label"><strong>Matrícula del Pasante:</strong></label>
                     <div class="input-group">
@@ -65,14 +58,15 @@
                     <ValidationMessage For="@(() => pasante.Pasantia)" />
                     <div class="invalid-tooltip">Please select a pasantia.</div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="Cantidad" class="form-label"><strong>Cantidad de Horas:</strong></label>
                     <InputNumber @bind-Value="pasante.CantidadHoras" class="form-control" />
                     <ValidationMessage For="@(() => pasante.CantidadHoras)" />
                 </div>
+            </div>
+
+            <div class="row mb-3">
 
                 <div class="col-md-4">
                     <label for="DiaInicio" class="form-label"><strong>Día de inicio:</strong></label>
@@ -137,8 +131,7 @@
 
     private async Task Guardar()
     {
-        if (string.IsNullOrWhiteSpace(pasante.Nombre) ||
-            string.IsNullOrWhiteSpace(pasante.Apellido) ||
+        if (string.IsNullOrWhiteSpace(pasante.Nombres) ||
             string.IsNullOrWhiteSpace(pasante.Cedula) ||
             string.IsNullOrWhiteSpace(pasante.Carrera) ||
             string.IsNullOrWhiteSpace(pasante.Matricula) ||
@@ -162,8 +155,7 @@
 
     private async Task GuardarImprimir()
     {
-        if (string.IsNullOrWhiteSpace(pasante.Nombre) ||
-            string.IsNullOrWhiteSpace(pasante.Apellido) ||
+        if (string.IsNullOrWhiteSpace(pasante.Nombres) ||
             string.IsNullOrWhiteSpace(pasante.Cedula) ||
             string.IsNullOrWhiteSpace(pasante.Carrera) ||
             string.IsNullOrWhiteSpace(pasante.Matricula) ||
@@ -191,7 +183,7 @@
 
         if (!string.IsNullOrEmpty(valor))
         {
-            pasante.Nombre = char.ToUpper(valor[0]) + valor.Substring(1);
+            pasante.Nombres = char.ToUpper(valor[0]) + valor.Substring(1);
         }
     }
     

@@ -39,8 +39,7 @@
         <thead class="bg-primary text-white">
             <tr>
                 <th>ID</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
+                <th>Nombres</th>
                 <th>C&eacutedula</th>
                 <th>Matr&iacutecula</th>
                 <th>Cantidad de Horas</th>
@@ -53,8 +52,7 @@
             {
                 <tr>
                     <td>@pasante.PasanteId</td>
-                    <td>@pasante.Nombre</td>
-                    <td>@pasante.Apellido</td>
+                    <td>@pasante.Nombres</td>
                     <td>@pasante.Cedula</td>
                     <td>@pasante.Matricula</td>
                     <td>@pasante.CantidadHoras</td>
@@ -116,7 +114,7 @@
             else if (filtro == "nombre")
             {
                 ListaPasante = await CartaService.GetAllPasantesAsync();
-                ListaPasante = ListaPasante.Where(p => p.Nombre == valorFiltro).ToList();
+                ListaPasante = ListaPasante.Where(p => p.Nombres == valorFiltro).ToList();
             }
             else if (filtro == "cedula")
             {

@@ -50,8 +50,7 @@ public class CartaService
         if (existingPasante != null)
         {
             // Si el pasante existe, actualizar sus propiedades
-            existingPasante.Nombre = pasante.Nombre;
-            existingPasante.Apellido = pasante.Apellido;
+            existingPasante.Nombres = pasante.Nombres;
             existingPasante.Cedula = pasante.Cedula;
             existingPasante.Carrera = pasante.Carrera;
             existingPasante.Matricula = pasante.Matricula;
