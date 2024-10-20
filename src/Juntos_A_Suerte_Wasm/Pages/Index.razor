@@ -1,22 +1,30 @@
 ﻿@page "/"
 @inject TeamService teamService
 @inject PersonService personService
+@inject NotificationService notify
 
-<div class="card">
-    <h5>Version 1.0.2</h5>
+<div class="card position-relative">
     <div class="card-header">
+        <h5>Version 1.0.3</h5>
         <h2 class="card-title text-center">GRUPOS</h2>
     </div>
     <div class="card-body">
         <div class="input-group mb-3">
             <input type="text" @bind="Name" class="form-control" placeholder="Nombre del grupo" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
-                <button class="btn btn-outline-primary" type="button" @onclick="Save">Nuevo Grupo</button>
+                <button class="btn btn-primary" type="button" @onclick="Save">Nuevo Grupo</button>
             </div>
         </div>
         <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-warning rounded-pill" data-bs-toggle="modal" data-bs-target="#personModal">Add Personas</button>
-            <button type="button" class="btn btn-success rounded-pill" @onclick="Shuffle">Sortear</button>
+            <button type="button" class="btn btn-success rounded-pill" @onclick="ShowPersonModal">
+                Add
+                <i class="bi bi-person-fill-add"></i>
+            </button>
+
+            <button type="button" class="btn btn-success rounded-pill" @onclick="Shuffle">
+                <span class="button-text">Sortear</span>
+                <i class="bi bi-dice-6-fill"></i>
+            </button>
         </div>
         <hr />
         <div class="form-control border-0 d-flex flex-wrap">
@@ -24,23 +32,34 @@
             {
                 <TeamComponent Team="@team" OnTeamDeleted="@Delete"></TeamComponent>
             }
-
         </div>
     </div>
 </div>
 
-<!-- The Person Modal -->
-<div class="modal" id="personModal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <PersonComponent />
+@if (isPersonModalVisible)
+{
+    <!-- The Person Modal -->
+    <div class="modal show d-block" tabindex="-1" style="z-index: 1050;">
+        <div class="modal-dialog modal-dialog-centered" style="z-index: 1060;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Personas</h2>
+                    <button type="button" class="btn-close" @onclick="HidePersonModal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <PersonComponent />
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+}
 @code
 {
     public string Name { get; set; } = "";
     public List<Team> Teams { get; set; } = new List<Team>();
+    private bool isPersonModalVisible = false;  
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,8 +74,11 @@
 
     public async Task Save()
     {
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            Name = "Default";
+        }
         await teamService.SaveAsync(Name);
-
         Name = string.Empty;
         await Refresh();
     }
@@ -69,8 +91,23 @@
 
     public async Task Shuffle()
     {
+        if (Teams == null || !Teams.Any())
+        {
+            notify.ShowNotification(title: "Error", message: "Crea los grupos antes de sortear.", NotificationSeverity.Error);
+            return;
+        }
         var people = await personService.GetPeopleAsync();
         ShuffleService.ShufflePeopleIntoTeams(Teams, people);
         await teamService.SaveTeamsAsync(Teams);
+    }
+
+    private void ShowPersonModal()
+    {
+        isPersonModalVisible = true;
+    }
+
+    private void HidePersonModal()
+    {
+        isPersonModalVisible = false;
     }
 }
