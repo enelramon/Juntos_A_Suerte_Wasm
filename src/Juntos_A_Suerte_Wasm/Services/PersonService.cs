@@ -14,24 +14,22 @@ public class PersonService
         _localStorage = localStorage;
     }
 
-    public async Task SaveAsync(string name)
-    {
-        _existingPeople = await GetPeopleAsync();
-        var namesArray = name.Split(",");
+	public async Task SaveAsync(string[] names)
+	{
+		_existingPeople = await GetPeopleAsync();
 
-        if (namesArray.Length == 1)
+        if (names.Length == 1)
         {
-            AddPerson(name);
+            AddPerson(names[0]);
         }
         else
         {
-            AddPeopleList(namesArray);
+            AddPeopleList(names);
         }
+		await SavePersonAsync();
+	}
 
-        await SavePersonAsync();
-    }
-
-    private void AddPerson(string name)
+	private void AddPerson(string name)
     {
         var newPerson = new Person
         {
