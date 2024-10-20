@@ -52,7 +52,7 @@
     private async Task LoadTeam()
     {
         var teams = await teamService.GetTeamsAsync();
-        team = teams.FirstOrDefault(t => t.TeamId == id);
+        team = teams.Find(t => t.TeamId == id);
 
         if (team == null)
         {

@@ -37,7 +37,7 @@ X
 @code {
 	public string Name { get; set; } = "";
 	public List<Person> People { get; set; } = new List<Person>();
-	private bool isPersonModalVisible = false;
+	private readonly bool isPersonModalVisible = false;
 
 	protected override async Task OnInitializedAsync()
 	{

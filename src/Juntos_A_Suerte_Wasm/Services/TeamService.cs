@@ -48,7 +48,7 @@ public class TeamService
     public async Task<bool> UpdateTeamAsync(Team updatedTeam)
     {
         var teams = await GetTeamsAsync();
-        var existingTeam = teams.FirstOrDefault(t => t.TeamId == updatedTeam.TeamId);
+        var existingTeam = teams.Find(t => t.TeamId == updatedTeam.TeamId);
         if (existingTeam != null)
         {
             existingTeam.Name = updatedTeam.Name;
