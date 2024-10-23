@@ -1,6 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using Juntos_A_Suerte_Wasm.Models;
-
 namespace Juntos_A_Suerte_Wasm.Services;
 
 public class TeamService
@@ -45,5 +44,17 @@ public class TeamService
             teams.Remove(teamToRemove);
             await SaveTeamsAsync(teams);
         }
+    }
+    public async Task<bool> UpdateTeamAsync(Team updatedTeam)
+    {
+        var teams = await GetTeamsAsync();
+        var existingTeam = teams.Find(t => t.TeamId == updatedTeam.TeamId);
+        if (existingTeam != null)
+        {
+            existingTeam.Name = updatedTeam.Name;
+            await SaveTeamsAsync(teams);
+            return true;
+        }
+        return false;
     }
 }

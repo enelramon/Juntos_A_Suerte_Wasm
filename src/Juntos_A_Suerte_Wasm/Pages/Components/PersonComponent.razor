@@ -1,20 +1,16 @@
 ﻿@inject PersonService personService
 @inject NotificationService notify
+@inject NavigationManager Navigation
 
 <div class="card">
-    <div class="card-header">
-        <h2 class="card-title text-center">Personas</h2>
-    </div>
     <div class="card-body">
         <div class="mb-3">
             <label>Nombre o Nombres separado por coma</label>
             <input type="text" @bind="Name" class="form-control" />
         </div>
-
         <div class="mb-3">
             <label class="form-check-label" for="flexCheckChecked">Para agregar varias personas en un solo paso ponga los nombres separados por coma</label>
         </div>
-
         <hr />
         <div class="form-control border-0 d-flex flex-wrap">
             @foreach (var person in People)
@@ -22,8 +18,7 @@
                 <div class="p-1 border-1">
                     <h5>
                         <span class="badge border border-gray text-body ">
-                            @person.Name <button class="bg-transparent border-0 text-body"
-                            @onclick="@(()=> Delete(person.PersonId))">
+                            @person.Name <button class="bg-transparent border-0 text-body" @onclick="@(()=> Delete(person.PersonId))">
                                 X
                             </button>
                         </span>
@@ -42,6 +37,7 @@
 @code {
     public string Name { get; set; } = "";
     public List<Person> People { get; set; } = new List<Person>();
+    private readonly bool isPersonModalVisible = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,17 +57,27 @@
 
     public async Task Save()
     {
-        await personService.SaveAsync(Name);
+        if (string.IsNullOrWhiteSpace(Name) || Name.Trim().Equals(","))
+        {
+            notify.ShowNotification(title: "Error", message: "El nombre es incorrecto", NotificationSeverity.Error);
+            return;
+        }
+        var names = Name.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                         .Select(n => n.Trim())
+                         .Where(n => !string.IsNullOrWhiteSpace(n))
+                         .ToArray();
 
+        await personService.SaveAsync(names!);
         Name = string.Empty;
         await Refresh();
         notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
+
     }
 
     public async Task Delete(int personId)
     {
         await personService.DeletePersonAsync(personId);
         await Refresh();
-        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
+        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado", NotificationSeverity.Error);
     }
 }
