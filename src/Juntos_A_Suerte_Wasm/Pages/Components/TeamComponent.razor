@@ -1,9 +1,25 @@
+@inject TeamService teamService
+@inject NotificationService notify
+@inject NavigationManager navigate
+
 <div class="p-1">
     <div class="card">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
-                <h4 class="card-title">@team.Name</h4>
-                <button class="btn btn-sm btn-outline-danger" @onclick="@(()=>Delete(@team.TeamId))">Eliminar</button>
+                <h4 class="card-title me-3 mb-0">@team.Name</h4> 
+                <div class="d-flex align-items-center">
+                 
+                    <button class="btn btn-transparent p-0 me-2"
+                           @onclick="@(() => goToEdit(@team.TeamId))">
+                        <i class="bi bi-pencil" style="color: blue;"></i> 
+                    </button>
+
+                
+                    <button class="btn btn-transparent p-0"
+                            @onclick="@(() => Delete(@team.TeamId))">
+                        <i class="bi bi-x-lg" style="color: red;"></i> 
+                    </button>
+                </div>
             </div>
             <hr />
             @foreach (var person in team.Members)
@@ -19,15 +35,33 @@
 {
     [Parameter]
     public Team team { get; set; } = new Team();
+    public List<Team> Team { get; set; } = new List<Team>();
 
     [Parameter]
     public EventCallback<int> OnTeamDeleted { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    private async Task Refresh()
+    {
+        Team = await teamService.GetTeamsAsync();
+    }
 
     public async Task Delete(int TeamId)
     {
         if (OnTeamDeleted.HasDelegate)
         {
             await OnTeamDeleted.InvokeAsync(TeamId);
+            await Refresh();
+            notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
         }
+    }
+
+    public void goToEdit(int id) 
+    {
+        navigate.NavigateTo($"/edit/{id}");
     }
 }
