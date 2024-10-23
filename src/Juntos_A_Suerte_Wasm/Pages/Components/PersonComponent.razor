@@ -57,34 +57,27 @@
 
     public async Task Save()
     {
-        if (!string.IsNullOrWhiteSpace(Name))
+        if (string.IsNullOrWhiteSpace(Name) || Name.Trim().Equals(","))
         {
-            var names = Name.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                            .Select(n => n.Trim())
-                            .Where(n => !string.IsNullOrWhiteSpace(n))
-                            .ToArray();
-
-            if (names.Length == 0)
-            {
-                notify.ShowNotification(title: "Error", message: "No se puede guardar. Introduzca un nombre válido.", NotificationSeverity.Error);
-                return;
-            }
-
-            await personService.SaveAsync(names);
-            Name = string.Empty;
-            await Refresh();
-            notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
+            notify.ShowNotification(title: "Error", message: "El nombre es incorrecto", NotificationSeverity.Error);
+            return;
         }
-        else
-        {
-            notify.ShowNotification(title: "Error", message: "El nombre no puede estar vacío", NotificationSeverity.Error);
-        }
+        var names = Name.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                         .Select(n => n.Trim())
+                         .Where(n => !string.IsNullOrWhiteSpace(n))
+                         .ToArray();
+
+        await personService.SaveAsync(names!);
+        Name = string.Empty;
+        await Refresh();
+        notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
+
     }
 
     public async Task Delete(int personId)
     {
         await personService.DeletePersonAsync(personId);
         await Refresh();
-        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
+        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado", NotificationSeverity.Error);
     }
 }

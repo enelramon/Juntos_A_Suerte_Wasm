@@ -5,8 +5,8 @@
 
 @if (team != null)
 {
-    <div class="modal show d-block" tabindex="-1" style="z-index: 1050;">
-        <div class="modal-dialog modal-dialog-centered" style="z-index: 1060;">
+    <div class="modal show d-block z-index-1050" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered z-index-1060">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title">Editar Equipo</h2>
@@ -15,28 +15,26 @@
                 <div class="modal-body">
                     <EditForm Model="@team" OnValidSubmit="HandleValidSubmit">
                         <DataAnnotationsValidator />
-                        <ValidationSummary />
 
-                         
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <label class="form-label" for="name"><strong>Nombre del Equipo:</strong></label>
-                                        <InputText id="name" class="form-control" @bind-Value="team.Name" />
-                                        <ValidationMessage For="@(() => team.Name)" />
-                                    </div>                  
-                                </div>
-                                <div class="card-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-secondary" @onclick="HideTeamModal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i/> Guardar
-                                    </button>
-                                </div>                   
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label" for="name"><strong>Nombre del Equipo:</strong></label>
+                                <InputText id="name" class="form-control" @bind-Value="team.Name" />
+                                <ValidationMessage For="@(() => team.Name)" />
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary" @onclick="HideTeamModal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">
+                                <i /> Guardar
+                            </button>
+                        </div>
                     </EditForm>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+    <div class="modal-backdrop fade show z-index-1040"></div>
 }
 
 
