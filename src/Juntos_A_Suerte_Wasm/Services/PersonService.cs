@@ -6,7 +6,7 @@ namespace Juntos_A_Suerte_Wasm.Services;
 public class PersonService
 {
     private readonly ILocalStorageService _localStorage;
-    private List<Person> _existingPeople = new List<Person>();
+    private List<Person> _existingPeople = new();
     private const string StorageKey = "people";
 
     public PersonService(ILocalStorageService localStorage)
@@ -14,22 +14,15 @@ public class PersonService
         _localStorage = localStorage;
     }
 
-	public async Task SaveAsync(string[] names)
-	{
-		_existingPeople = await GetPeopleAsync();
+    public async Task SaveAsync(string[] names)
+    {
+        _existingPeople = await GetPeopleAsync();
+        AddPeopleList(names);
 
-        if (names.Length == 1)
-        {
-            AddPerson(names[0]);
-        }
-        else
-        {
-            AddPeopleList(names);
-        }
-		await SavePersonAsync();
-	}
+        await SavePersonAsync();
+    }
 
-	private void AddPerson(string name)
+    private void AddPerson(string name)
     {
         var newPerson = new Person
         {
@@ -50,7 +43,7 @@ public class PersonService
 
     private int GetNextId()
     {
-        return _existingPeople!.Any() ? _existingPeople!.Max(p => p.PersonId) + 1 : 1;
+        return _existingPeople.Count > 0 ? _existingPeople.Max(p => p.PersonId) + 1 : 1;
     }
 
     public async Task<List<Person>> GetPeopleAsync()
