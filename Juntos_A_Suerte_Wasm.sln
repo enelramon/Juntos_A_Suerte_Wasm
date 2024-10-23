@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Juntos_A_Suerte.Api", "WebApplication1\Juntos_A_Suerte.Api.csproj", "{5B99E0AB-2072-497B-8B61-63CFA3614D43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{E2140F99-998B-45F1-801C-8E557D76A3C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2140F99-998B-45F1-801C-8E557D76A3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2140F99-998B-45F1-801C-8E557D76A3C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B99E0AB-2072-497B-8B61-63CFA3614D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B99E0AB-2072-497B-8B61-63CFA3614D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B99E0AB-2072-497B-8B61-63CFA3614D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B99E0AB-2072-497B-8B61-63CFA3614D43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
