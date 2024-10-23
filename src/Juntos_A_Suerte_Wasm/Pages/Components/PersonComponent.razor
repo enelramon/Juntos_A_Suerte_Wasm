@@ -3,88 +3,88 @@
 @inject NavigationManager Navigation
 
 <div class="card">
-	<div class="card-body">
-		<div class="mb-3">
-			<label>Nombre o Nombres separado por coma</label>
-			<input type="text" @bind="Name" class="form-control" />
-		</div>
-		<div class="mb-3">
-			<label class="form-check-label" for="flexCheckChecked">Para agregar varias personas en un solo paso ponga los nombres separados por coma</label>
-		</div>
-		<hr />
-		<div class="form-control border-0 d-flex flex-wrap">
-			@foreach (var person in People)
-			{
-				<div class="p-1 border-1">
-					<h5>
-						<span class="badge border border-gray text-body ">
-							@person.Name <button class="bg-transparent border-0 text-body" @onclick="@(()=> Delete(person.PersonId))">
-X
-							</button>
-						</span>
-					</h5>
-				</div>
-			}
+    <div class="card-body">
+        <div class="mb-3">
+            <label>Nombre o Nombres separado por coma</label>
+            <input type="text" @bind="Name" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-check-label" for="flexCheckChecked">Para agregar varias personas en un solo paso ponga los nombres separados por coma</label>
+        </div>
+        <hr />
+        <div class="form-control border-0 d-flex flex-wrap">
+            @foreach (var person in People)
+            {
+                <div class="p-1 border-1">
+                    <h5>
+                        <span class="badge border border-gray text-body ">
+                            @person.Name <button class="bg-transparent border-0 text-body" @onclick="@(()=> Delete(person.PersonId))">
+                                X
+                            </button>
+                        </span>
+                    </h5>
+                </div>
+            }
 
-		</div>
+        </div>
 
-	</div>
-	<div class="card-footer">
-		<button type="button" class="btn d-flex btn-success" @onclick="Save">Guardar</button>
-	</div>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn d-flex btn-success" @onclick="Save">Guardar</button>
+    </div>
 </div>
 
 @code {
-	public string Name { get; set; } = "";
-	public List<Person> People { get; set; } = new List<Person>();
-	private readonly bool isPersonModalVisible = false;
+    public string Name { get; set; } = "";
+    public List<Person> People { get; set; } = new List<Person>();
+    private readonly bool isPersonModalVisible = false;
 
-	protected override async Task OnInitializedAsync()
-	{
-		await Refresh();
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
 
-	private async Task Refresh()
-	{
-		People = await personService.GetPeopleAsync();
-	}
+    private async Task Refresh()
+    {
+        People = await personService.GetPeopleAsync();
+    }
 
-	public async Task New()
-	{
-		People = await personService.GetPeopleAsync();
-		notify.ShowNotification(title: "Restaurado", message: "Se ha actualizado correctamente", NotificationSeverity.Info);
-	}
+    public async Task New()
+    {
+        People = await personService.GetPeopleAsync();
+        notify.ShowNotification(title: "Restaurado", message: "Se ha actualizado correctamente", NotificationSeverity.Info);
+    }
 
-	public async Task Save()
-	{
-		if (!string.IsNullOrWhiteSpace(Name))
-		{
-			var names = Name.Split(',', StringSplitOptions.RemoveEmptyEntries)
-							.Select(n => n.Trim())
-							.Where(n => !string.IsNullOrWhiteSpace(n)) 
-							.ToArray();
+    public async Task Save()
+    {
+        if (!string.IsNullOrWhiteSpace(Name))
+        {
+            var names = Name.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(n => n.Trim())
+                            .Where(n => !string.IsNullOrWhiteSpace(n))
+                            .ToArray();
 
-			if (names.Length == 0)
-			{
-				notify.ShowNotification(title: "Error", message: "No se puede guardar. Introduzca un nombre válido.", NotificationSeverity.Error);
-				return;
-			}
+            if (names.Length == 0)
+            {
+                notify.ShowNotification(title: "Error", message: "No se puede guardar. Introduzca un nombre válido.", NotificationSeverity.Error);
+                return;
+            }
 
-			await personService.SaveAsync(names);
-			Name = string.Empty;
-			await Refresh();
-			notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
-		}
-		else
-		{
-			notify.ShowNotification(title: "Error", message: "El nombre no puede estar vacío", NotificationSeverity.Error);
-		}
-	}
+            await personService.SaveAsync(names);
+            Name = string.Empty;
+            await Refresh();
+            notify.ShowNotification(title: "Guardado", message: "Se ha guardado exitosamente", NotificationSeverity.Success);
+        }
+        else
+        {
+            notify.ShowNotification(title: "Error", message: "El nombre no puede estar vacío", NotificationSeverity.Error);
+        }
+    }
 
-	public async Task Delete(int personId)
-	{
-		await personService.DeletePersonAsync(personId);
-		await Refresh();
-		notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
-	}
+    public async Task Delete(int personId)
+    {
+        await personService.DeletePersonAsync(personId);
+        await Refresh();
+        notify.ShowNotification(title: "Eliminado", message: "Ha sido eliminado con éxito", NotificationSeverity.Error);
+    }
 }
