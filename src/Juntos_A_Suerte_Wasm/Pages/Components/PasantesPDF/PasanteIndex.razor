@@ -1,0 +1,138 @@
+﻿@page "/PasanteIndex"
+
+@inject CartaService CartaService
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Forms
+
+<EditForm Model="ListaPasante" class="border shadow-lg p-3 rounded">
+    <div class="card-header bg-primary text-white text-center py-2 rounded">
+        <h3 style="font-weight: bold;" class="mb-0 font-weight-bold">Consulta de Pasantes</h3>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3 align-items-end">
+            <div class="col-md-3">
+                <label for="Filtro" class="form-label">Filtrar por:</label>
+                <select @bind="filtro" class="form-select">
+                    <option value="id">ID</option>
+                    <option value="nombre">Nombre</option>
+                    <option value="cedula">C&eacutedula</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="ValorFiltro" class="form-label">Búsqueda:</label>
+                <div class="input-group">
+                    <input @bind="valorFiltro" class="form-control" placeholder="Buscar" />
+                    <button @onclick="Buscar" class="btn btn-outline-primary" type="button">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-3 text-end">
+                <a href="/RegistroPasante" class="btn btn-success" type="button">
+                    <i class="bi bi-clipboard-plus"></i> Registrar
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <table class="table table-bordered text-center">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th>ID</th>
+                <th>Nombres</th>
+                <th>C&eacutedula</th>
+                <th>Matr&iacutecula</th>
+                <th>Cantidad de Horas</th>
+                <th>Editar</th>
+                <th>Imprimir</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pasante in ListaPasante)
+            {
+                <tr>
+                    <td>@pasante.PasanteId</td>
+                    <td>@pasante.Nombres</td>
+                    <td>@pasante.Cedula</td>
+                    <td>@pasante.Matricula</td>
+                    <td>@pasante.CantidadHoras</td>
+                    <td>
+                        <a href="/PasanteEdit/@pasante.PasanteId" style="border: none; background-color: transparent;" class="btn-editar">
+                            <i class="bi bi-pen" style="font-size: 2rem;"></i>
+                        </a>
+
+                    </td>
+                    <td>
+                        <button @onclick="(async () => await Imprimir(pasante.PasanteId))" class="btn-imprimir btn btn-outline-primary">
+                            <i class="bi bi-printer-fill" style="font-size: 2rem;"></i>
+                        </button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</EditForm>
+
+@code {
+
+    public Pasantes pasante = new Pasantes();
+
+    public List<Pasantes> ListaPasante = new List<Pasantes>();
+
+    private string filtro = "id";
+    private string valorFiltro = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListaPasante = await CartaService.ListarPasantesAsync();
+    }
+
+    public async Task Guardar()
+    {
+        await CartaService.SaveOrUpdatePasanteAsync(pasante);
+    }
+
+
+    private async Task Buscar()
+    {
+        if (valorFiltro.Trim() != "")
+        {
+            if (filtro == "id" && int.TryParse(valorFiltro, out int codigoRegistro))
+            {
+                var pasante = await CartaService.GetPasanteAsync(codigoRegistro);
+                if (pasante != null)
+                {
+                    ListaPasante = new List<Pasantes> { pasante };
+                }
+                else
+                {
+                    ListaPasante = new List<Pasantes>();
+                }
+            }
+            else if (filtro == "nombre")
+            {
+                ListaPasante = await CartaService.GetAllPasantesAsync();
+                ListaPasante = ListaPasante.Where(p => p.Nombres == valorFiltro).ToList();
+            }
+            else if (filtro == "cedula")
+            {
+                ListaPasante = await CartaService.GetAllPasantesAsync();
+                ListaPasante = ListaPasante.Where(p => p.Cedula == valorFiltro).ToList();
+            }
+        }
+        else
+        {
+            ListaPasante = await CartaService.GetAllPasantesAsync();
+        }
+
+    }
+
+
+    private async Task Imprimir(int codigoRegistro)
+    {
+        NavigationManager.NavigateTo($"/PasanteImprimir/{codigoRegistro}");
+    }
+
+}

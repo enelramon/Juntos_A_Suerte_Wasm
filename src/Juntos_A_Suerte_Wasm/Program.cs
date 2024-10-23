@@ -15,5 +15,6 @@ builder.Services.AddScoped<NotificationService>();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<PersonService>();
 builder.Services.AddScoped<TeamService>();
+builder.Services.AddScoped<CartaService>();
 
 await builder.Build().RunAsync();

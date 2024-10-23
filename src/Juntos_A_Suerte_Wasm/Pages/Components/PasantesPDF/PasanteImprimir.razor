@@ -1,0 +1,32 @@
+﻿@page "/PasanteImprimir"
+@page "/PasanteImprimir/{PasanteID:int}" 
+
+@inject CartaService CartaService
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@using Newtonsoft.Json;
+
+<button class="btn btn-outline-success" data-toggle="tooltip" title="Exportar" @onclick="(()=> export())">Generar PDF</button>
+
+@code {
+
+    private Pasantes pasante;
+
+    [Parameter]
+    public int PasanteID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        pasante = await CartaService.GetPasanteAsync(PasanteID);
+        pasante.FechaExpide = DateTime.Today;
+    }
+
+    private async Task export()
+    {
+        Console.WriteLine("Pasante object:", pasante);
+        string json = JsonConvert.SerializeObject(pasante);
+        await JS.InvokeVoidAsync("GenerarPDF", json);
+    }
+
+}
+
