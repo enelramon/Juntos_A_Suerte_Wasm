@@ -16,11 +16,11 @@
                 <label class="form-check-label" for="Serializar">Serializar (1,2...N)</label>
             </div>
             <div class="mb-2">
-                <InputCheckbox class="form-check-input" @bind-Value="isNamePersonalized" @onchange="OnPersonalizedChange" id="PersonalizarNombre" />
+                <InputCheckbox class="form-check-input" @bind-Value="isNamePersonalized" @oninput="OnPersonalizedChange" id="PersonalizarNombre" />
                 <label class="form-check-label" for="PersonalizarNombre">Nombre de Grupo Personalizado (Default: Grupo)</label>
             </div>
             <div class="mb-2">
-                <InputCheckbox class="form-check-input" @bind-Value="isNameRandom" @onchange="OnRandomChange" id="NombreAleatorio" />
+                <InputCheckbox class="form-check-input" @bind-Value="isNameRandom" @oninput="OnRandomChange" id="NombreAleatorio" />
                 <label class="form-check-label" for="NombreAleatorio">Nombre Aleatorio</label>
             </div>
         </div>
@@ -167,12 +167,12 @@
 
     }
 
-    private void OnPersonalizedChange(ChangeEventArgs e)
+    public void OnPersonalizedChange(ChangeEventArgs e)
     {
         isNameRandom = false;
     }
 
-    private void OnRandomChange(ChangeEventArgs e)
+    public void OnRandomChange(ChangeEventArgs e)
     {
         isNamePersonalized = false;
     }
