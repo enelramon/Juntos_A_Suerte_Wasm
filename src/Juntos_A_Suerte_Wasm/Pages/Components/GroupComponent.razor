@@ -34,7 +34,7 @@
         {
             <div class="mb-3">
                 <label for="NombrePersonalizado" class="form-label">Nombre Personalizado</label>
-                <input type="text" id="NombrePersonalizado" @bind="NombrePersonalizado" class="form-control" />
+                <InputText id="NombrePersonalizado" @bind-value="NombrePersonalizado" class="form-control"></InputText>
             </div>
         }
 
@@ -54,6 +54,35 @@
     public bool isNameRandom { get; set; } = false;
     public int GroupCount { get; set; } = 1;
 
+    private List<string> randomNames = new()
+    {
+        "Los Circuitos",    "Los Codificadores",
+    "Byte Warriors",    "ElectroMentes",
+    "Los Engranajes",    "Los Debuggers",
+    "Las Resistencias",    "Los Autómatas",
+    "Los Innovadores",    "Cero y Uno",
+    "Los Futuristas",    "Vector Team",
+    "Los Prototipos",    "Team CAD",
+    "Estructuras Dinámicas",    "Los Ingeniosos",
+    "Fuerza y Movimiento",    "Termodinámicos",
+    "Los Sólidos Rígidos",    "Los Visionarios",
+    "Los Algoritmos",    "Newton Squad",
+    "Team Tensor",    "Los Analógicos",
+    "Quantum Engineers",    "Equipo Entropía",
+    "Los Matrizanos",    "Los Disruptivos",
+    "Ingeniería Extrema",    "Pioneros del Futuro",
+    "Lógica y Diseño",    "Los Simuladores",
+    "Hardware Heroes",    "The Innovators",
+    "Team Voltaje",    "Motores de Cambio",
+    "Los Dinamizadores",    "Constantes y Variables",
+    "Team Transformadores",    "Innovación Colectiva",
+    "Los Mecatrónicos",    "Energía Infinita",
+    "Los Constructores",    "Chispas Creativas",
+    "Robotics Crew",    "Infinity Coders",
+    "Future Makers",    "Team Resiliencia",
+    "Los Desarrolladores",    "Los Analistas",
+    "Los Pioneros",    "Científicos del Mañana"
+    };
 
     List<Team> teams = new();
 
@@ -78,30 +107,62 @@
         notify.ShowNotification(title: "Eliminacion de Grupos", message: "Se eliminaron todos los grupos", NotificationSeverity.Warning);
     }
 
+    public int GetRandomNumber(int min, int max)
+    {
+        Random random = new();
+        return random.Next(min, max);
+    }
+
     public async Task CreateGroups()
     {
-        if (isDeleteExisting) // Eliminar grupos existentes
+        List<string> listaNombres = randomNames;
+
+        if (isDeleteExisting)
         {
             await DeleteAllGroups();
         }
 
+
         for (int i = 0; i < GroupCount; i++)
         {
             string? name = "Default";
+
+            int randomIndex = GetRandomNumber(0, listaNombres.Count);
+
             if (isSerialized)
             {
-                name = isNamePersonalized ? $"{NombrePersonalizado} | #{teams.Count + 1}" : $"Grupo | #{teams.Count + 1}";
+                if (isNameRandom) // Si es random
+                {
+                    name = $"{listaNombres[randomIndex]} | #{teams.Count + 1}";
+                }
+                else if (isNamePersonalized) // Si es personalizado
+                {
+                    name = $"{NombrePersonalizado} | #{teams.Count + 1}";
+                }
+                else // Predeterminado
+                {
+                    name = $"Grupo | #{teams.Count + 1}";
+                }
             }
             else
             {
-                name = isNamePersonalized ? NombrePersonalizado : "Grupo";
+                if (isNameRandom)
+                {
+                    name = listaNombres[randomIndex];
+                }
+                else
+                {
+                    name = isNamePersonalized ? NombrePersonalizado : "Grupo";
+                }
             }
+
+            listaNombres.Remove(listaNombres[randomIndex]);
 
             await teamService.SaveAsync(name);
             await Refresh();
         }
 
-        string inforesult = $"Nombre:<br/> {(isNamePersonalized ? NombrePersonalizado : "Grupo")}<br/> {(isSerialized ? "Con Serializacion" : "No Serializado")}";
+        string inforesult = $"Nombres:<br/> {(isNamePersonalized ? NombrePersonalizado : (isNameRandom ? "Random" : "Grupo"))}<br/> {(isSerialized ? "Con Serializacion" : "No Serializado")}";
         notify.ShowNotification(title: "Se crearon los grupos", message: inforesult, NotificationSeverity.Success);
 
     }
