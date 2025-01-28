@@ -6,51 +6,83 @@
 <div class="card">
     <div class="card-body">
 
-        <label class="form-check-label">Eliminar Grupos Existentes</label>
-        <InputCheckbox class="form-check-input" @bind-Value="isDeleteExisting" Label="Eliminar Grupos" />
-
-        <label class="form-check-label">Serializar (1,2...N)</label>
-        <InputCheckbox class="form-check-input" @bind-Value="isSerialized" Label="Serializar" />
-
-        <label class="form-check-label">Nombre de Grupo Personalizado (Default: Grupo)</label>
-        <InputCheckbox class="form-check-input" @bind-Value="isNamePersonalized" Label="Personalizar Nombre" />
-
-        <label class="form-label">Cantidad de Grupos</label>
-        <InputNumber class="form-control" @bind-Value="GroupCount" />
-
+        <div class="form-check">
+            <div class="mb-2">
+                <InputCheckbox class="form-check-input" @bind-Value="isDeleteExisting" id="EliminarExistentes" />
+                <label class="form-check-label" for="EliminarExistentes">Eliminar Grupos Existentes</label>
+            </div>
+            <div class="mb-2">
+                <InputCheckbox class="form-check-input" @bind-Value="isSerialized" id="Serializar" />
+                <label class="form-check-label" for="Serializar">Serializar (1,2...N)</label>
+            </div>
+            <div class="mb-2">
+                <InputCheckbox class="form-check-input" @bind-Value="isNamePersonalized" @onchange="OnPersonalizedChange" id="PersonalizarNombre" />
+                <label class="form-check-label" for="PersonalizarNombre">Nombre de Grupo Personalizado (Default: Grupo)</label>
+            </div>
+            <div class="mb-2">
+                <InputCheckbox class="form-check-input" @bind-Value="isNameRandom" @onchange="OnRandomChange" id="NombreAleatorio" />
+                <label class="form-check-label" for="NombreAleatorio">Nombre Aleatorio</label>
+            </div>
+        </div>
+        <hr class="my-4" />
+        <div class="mb-3">
+            <label for="GroupCount" class="form-label">Cantidad de Grupos</label>
+            <InputNumber id="GroupCount" class="form-control" min @bind-Value="GroupCount" />
+        </div>
 
         @if (isNamePersonalized)
         {
             <div class="mb-3">
-                <label>Nombre Personalizado</label>
-                <input type="text" @bind="NombrePersonalizado" class="form-control" />
+                <label for="NombrePersonalizado" class="form-label">Nombre Personalizado</label>
+                <input type="text" id="NombrePersonalizado" @bind="NombrePersonalizado" class="form-control" />
             </div>
         }
 
     </div>
 
-    <div class="card-footer">
-        <button type="button" class="btn d-flex btn-success" @onclick="CreateGroups">Crear Grupos</button>
+    <div class="card-footer align-content-around">
+        <button type="button" class="btn btn-success" @onclick="CreateGroups">Crear Grupos</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteAllGroups">Eliminar Grupos</button>
     </div>
 </div>
 
 @code {
-    public bool isSerialized { get; set; } = false;
+    public bool isSerialized { get; set; } = true;
     public bool isNamePersonalized { get; set; } = false;
-    public bool isDeleteExisting { get; set; } = true;
+    public bool isDeleteExisting { get; set; } = false;
     public string? NombrePersonalizado { get; set; } = "";
-    public int GroupCount { get; set; } = 0;
+    public bool isNameRandom { get; set; } = false;
+    public int GroupCount { get; set; } = 1;
 
+
+    List<Team> teams = new();
+
+    private async Task Refresh()
+    {
+        teams = await teamService.GetTeamsAsync();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    public async Task DeleteAllGroups()
+    {
+        foreach (var team in teams)
+        {
+            await teamService.DeleteTeamAsync(team.TeamId);
+        }
+        await Refresh();
+        notify.ShowNotification(title: "Eliminacion de Grupos", message: "Se eliminaron todos los grupos", NotificationSeverity.Warning);
+    }
 
     public async Task CreateGroups()
     {
         if (isDeleteExisting) // Eliminar grupos existentes
         {
-            List<Team> teams = await teamService.GetTeamsAsync();
-            foreach (var team in teams)
-            {
-                await teamService.DeleteTeamAsync(team.TeamId);
-            }
+            await DeleteAllGroups();
         }
 
         for (int i = 0; i < GroupCount; i++)
@@ -58,7 +90,7 @@
             string? name = "Default";
             if (isSerialized)
             {
-                name = isNamePersonalized ? $"#{i + 1} | {NombrePersonalizado}" : $"#{i + 1} | Grupo";
+                name = isNamePersonalized ? $"{NombrePersonalizado} | #{teams.Count + 1}" : $"Grupo | #{teams.Count + 1}";
             }
             else
             {
@@ -66,10 +98,21 @@
             }
 
             await teamService.SaveAsync(name);
+            await Refresh();
         }
 
-        string inforesult = $"Grupo creaco con nombre {(isNamePersonalized ? NombrePersonalizado : "Grupo")}\n {(isSerialized ? "Con Serializacion" : "No Serializado")}";
+        string inforesult = $"Nombre:<br/> {(isNamePersonalized ? NombrePersonalizado : "Grupo")}<br/> {(isSerialized ? "Con Serializacion" : "No Serializado")}";
         notify.ShowNotification(title: "Se crearon los grupos", message: inforesult, NotificationSeverity.Success);
 
+    }
+
+    private void OnPersonalizedChange(ChangeEventArgs e)
+    {
+        isNameRandom = false;
+    }
+
+    private void OnRandomChange(ChangeEventArgs e)
+    {
+        isNamePersonalized = false;
     }
 }
