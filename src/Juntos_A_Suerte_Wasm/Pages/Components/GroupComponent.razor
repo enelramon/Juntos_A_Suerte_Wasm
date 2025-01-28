@@ -1,0 +1,75 @@
+﻿@inject NotificationService notify
+@inject NavigationManager Navigation
+@inject TeamService teamService
+
+
+<div class="card">
+    <div class="card-body">
+
+        <label class="form-check-label">Eliminar Grupos Existentes</label>
+        <InputCheckbox class="form-check-input" @bind-Value="isDeleteExisting" Label="Eliminar Grupos" />
+
+        <label class="form-check-label">Serializar (1,2...N)</label>
+        <InputCheckbox class="form-check-input" @bind-Value="isSerialized" Label="Serializar" />
+
+        <label class="form-check-label">Nombre de Grupo Personalizado (Default: Grupo)</label>
+        <InputCheckbox class="form-check-input" @bind-Value="isNamePersonalized" Label="Personalizar Nombre" />
+
+        <label class="form-label">Cantidad de Grupos</label>
+        <InputNumber class="form-control" @bind-Value="GroupCount" />
+
+
+        @if (isNamePersonalized)
+        {
+            <div class="mb-3">
+                <label>Nombre Personalizado</label>
+                <input type="text" @bind="NombrePersonalizado" class="form-control" />
+            </div>
+        }
+
+    </div>
+
+    <div class="card-footer">
+        <button type="button" class="btn d-flex btn-success" @onclick="CreateGroups">Crear Grupos</button>
+    </div>
+</div>
+
+@code {
+    public bool isSerialized { get; set; } = false;
+    public bool isNamePersonalized { get; set; } = false;
+    public bool isDeleteExisting { get; set; } = true;
+    public string? NombrePersonalizado { get; set; } = "";
+    public int GroupCount { get; set; } = 0;
+
+
+    public async Task CreateGroups()
+    {
+        if (isDeleteExisting) // Eliminar grupos existentes
+        {
+            List<Team> teams = await teamService.GetTeamsAsync();
+            foreach (var team in teams)
+            {
+                await teamService.DeleteTeamAsync(team.TeamId);
+            }
+        }
+
+        for (int i = 0; i < GroupCount; i++)
+        {
+            string? name = "Default";
+            if (isSerialized)
+            {
+                name = isNamePersonalized ? $"#{i + 1} | {NombrePersonalizado}" : $"#{i + 1} | Grupo";
+            }
+            else
+            {
+                name = isNamePersonalized ? NombrePersonalizado : "Grupo";
+            }
+
+            await teamService.SaveAsync(name);
+        }
+
+        string inforesult = $"Grupo creaco con nombre {(isNamePersonalized ? NombrePersonalizado : "Grupo")}\n {(isSerialized ? "Con Serializacion" : "No Serializado")}";
+        notify.ShowNotification(title: "Se crearon los grupos", message: inforesult, NotificationSeverity.Success);
+
+    }
+}
