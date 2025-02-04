@@ -14,11 +14,13 @@
                 <label for="GroupCount" class="form-label">Cantidad</label>
                 <div class="input-group">
                     <span class="input-group-btn">
-                        <button type="button" class="btn btn-danger btn-number" @onclick="Substract" >
+                        <button type="button" class="btn btn-danger btn-number" @onclick="Substract">
                             <span class="bi bi-dash"></span>
                         </button>
                     </span>
+
                     <InputNumber id="GroupCount" class="form-control" min @bind-Value="GroupCount" />
+
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-success btn-number" @onclick="Add">
                             <span class="bi bi-plus-lg"></span>
@@ -29,7 +31,7 @@
         </div>
     </div>
 
-    <div class="card-footer align-content-around">
+    <div class="card-footer">
         <button type="button" class="btn btn-success" @onclick="CreateGroups">Crear Grupos</button>
         <button type="button" class="btn btn-danger" @onclick="DeleteAllGroups">Eliminar Grupos</button>
     </div>
@@ -85,9 +87,11 @@
         notify.ShowNotification(title: $"Se crearon {GroupCount} grupos<br/>", message: inforesult, NotificationSeverity.Success);
     }
 
-    public void Add(){
+    public void Add()
+    {
         GroupCount++;
     }
+
     public void Substract()
     {
         if (GroupCount > 1)
