@@ -5,19 +5,28 @@
 <div class="card">
     <div class="card-body">
         <div class="row">
-            <div class="col">
-                <label for="NombrePersonalizado" class="form-label">Prefijo</label>
-                <InputText id="NombrePersonalizado" @bind-value="prefijo" class="form-control row-cols-1"></InputText>
-
+            <div class="col col-7">
+                <label for="CustomPrefix" class="form-label">Prefijo</label>
+                <InputText id="CustomPrefix" @bind-value="prefijo" class="form-control" placeholder="Default <Grupo>"></InputText>
             </div>
 
-            <div class="col">
+            <div class="col col-5">
                 <label for="GroupCount" class="form-label">Cantidad</label>
-                <InputNumber id="GroupCount" class="form-control row-cols-1" min @bind-Value="GroupCount" />
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger btn-number" @onclick="Substract" >
+                            <span class="bi bi-dash"></span>
+                        </button>
+                    </span>
+                    <InputNumber id="GroupCount" class="form-control" min @bind-Value="GroupCount" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-success btn-number" @onclick="Add">
+                            <span class="bi bi-plus-lg"></span>
+                        </button>
+                    </span>
+                </div>
             </div>
         </div>
-
-
     </div>
 
     <div class="card-footer align-content-around">
@@ -55,7 +64,6 @@
 
     public async Task CreateGroups()
     {
-
         for (int i = 0; i < GroupCount; i++)
         {
             string? name;
@@ -64,7 +72,7 @@
             {
                 name = $"{prefijo} | #{teams.Count + 1}";
             }
-            else // Predeterminado
+            else
             {
                 name = $"Grupo | #{teams.Count + 1}";
             }
@@ -73,8 +81,18 @@
             await Refresh();
         }
 
-        string inforesult = $"Prefijo:<br/> {prefijo}";
-        notify.ShowNotification(title: "Se crearon los grupos", message: inforesult, NotificationSeverity.Success);
+        string inforesult = $"Prefijo: {prefijo}";
+        notify.ShowNotification(title: $"Se crearon {GroupCount} grupos<br/>", message: inforesult, NotificationSeverity.Success);
     }
 
+    public void Add(){
+        GroupCount++;
+    }
+    public void Substract()
+    {
+        if (GroupCount > 1)
+        {
+            GroupCount--;
+        }
+    }
 }
