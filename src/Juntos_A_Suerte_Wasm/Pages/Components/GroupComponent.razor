@@ -2,41 +2,21 @@
 @inject NavigationManager Navigation
 @inject TeamService teamService
 
-
 <div class="card">
     <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <label for="NombrePersonalizado" class="form-label">Prefijo</label>
+                <InputText id="NombrePersonalizado" @bind-value="prefijo" class="form-control row-cols-1"></InputText>
 
-        <div class="form-check">
-            <div class="mb-2">
-                <InputCheckbox class="form-check-input" @bind-Value="isDeleteExisting" id="EliminarExistentes" />
-                <label class="form-check-label" for="EliminarExistentes">Eliminar Grupos Existentes</label>
             </div>
-            <div class="mb-2">
-                <InputCheckbox class="form-check-input" @bind-Value="isSerialized" id="Serializar" />
-                <label class="form-check-label" for="Serializar">Serializar (1,2...N)</label>
-            </div>
-            <div class="mb-2">
-                <InputCheckbox class="form-check-input" @bind-Value="isNamePersonalized" @oninput="OnPersonalizedChange" id="PersonalizarNombre" />
-                <label class="form-check-label" for="PersonalizarNombre">Nombre de Grupo Personalizado (Default: Grupo)</label>
-            </div>
-            <div class="mb-2">
-                <InputCheckbox class="form-check-input" @bind-Value="isNameRandom" @oninput="OnRandomChange" id="NombreAleatorio" />
-                <label class="form-check-label" for="NombreAleatorio">Nombre Aleatorio</label>
+
+            <div class="col">
+                <label for="GroupCount" class="form-label">Cantidad</label>
+                <InputNumber id="GroupCount" class="form-control row-cols-1" min @bind-Value="GroupCount" />
             </div>
         </div>
-        <hr class="my-4" />
-        <div class="mb-3">
-            <label for="GroupCount" class="form-label">Cantidad de Grupos</label>
-            <InputNumber id="GroupCount" class="form-control" min @bind-Value="GroupCount" />
-        </div>
 
-        @if (isNamePersonalized)
-        {
-            <div class="mb-3">
-                <label for="NombrePersonalizado" class="form-label">Nombre Personalizado</label>
-                <InputText id="NombrePersonalizado" @bind-value="NombrePersonalizado" class="form-control"></InputText>
-            </div>
-        }
 
     </div>
 
@@ -47,42 +27,8 @@
 </div>
 
 @code {
-    public bool isSerialized { get; set; } = true;
-    public bool isNamePersonalized { get; set; } = false;
-    public bool isDeleteExisting { get; set; } = false;
-    public string? NombrePersonalizado { get; set; } = "";
-    public bool isNameRandom { get; set; } = false;
+    public string? prefijo { get; set; } = "";
     public int GroupCount { get; set; } = 1;
-
-    private List<string> randomNames = new()
-    {
-        "Los Circuitos",    "Los Codificadores",
-    "Byte Warriors",    "ElectroMentes",
-    "Los Engranajes",    "Los Debuggers",
-    "Las Resistencias",    "Los Autómatas",
-    "Los Innovadores",    "Cero y Uno",
-    "Los Futuristas",    "Vector Team",
-    "Los Prototipos",    "Team CAD",
-    "Estructuras Dinámicas",    "Los Ingeniosos",
-    "Fuerza y Movimiento",    "Termodinámicos",
-    "Los Sólidos Rígidos",    "Los Visionarios",
-    "Los Algoritmos",    "Newton Squad",
-    "Team Tensor",    "Los Analógicos",
-    "Quantum Engineers",    "Equipo Entropía",
-    "Los Matrizanos",    "Los Disruptivos",
-    "Ingeniería Extrema",    "Pioneros del Futuro",
-    "Lógica y Diseño",    "Los Simuladores",
-    "Hardware Heroes",    "The Innovators",
-    "Team Voltaje",    "Motores de Cambio",
-    "Los Dinamizadores",    "Constantes y Variables",
-    "Team Transformadores",    "Innovación Colectiva",
-    "Los Mecatrónicos",    "Energía Infinita",
-    "Los Constructores",    "Chispas Creativas",
-    "Robotics Crew",    "Infinity Coders",
-    "Future Makers",    "Team Resiliencia",
-    "Los Desarrolladores",    "Los Analistas",
-    "Los Pioneros",    "Científicos del Mañana"
-    };
 
     List<Team> teams = new();
 
@@ -104,76 +50,31 @@
             await teamService.DeleteTeamAsync(team.TeamId);
         }
         await Refresh();
-        notify.ShowNotification(title: "Eliminacion de Grupos", message: "Se eliminaron todos los grupos", NotificationSeverity.Warning);
-    }
-
-    public int GetRandomNumber(int min, int max)
-    {
-        Random random = new();
-        return random.Next(min, max);
+        notify.ShowNotification(title: "Eliminacion de Grupos", message: "Se eliminaron todos los grupos", NotificationSeverity.Success);
     }
 
     public async Task CreateGroups()
     {
-        List<string> listaNombres = randomNames;
-
-        if (isDeleteExisting)
-        {
-            await DeleteAllGroups();
-        }
-
 
         for (int i = 0; i < GroupCount; i++)
         {
-            string? name = "Default";
+            string? name;
 
-            int randomIndex = GetRandomNumber(0, listaNombres.Count);
-
-            if (isSerialized)
+            if (!string.IsNullOrEmpty(prefijo))
             {
-                if (isNameRandom) // Si es random
-                {
-                    name = $"{listaNombres[randomIndex]} | #{teams.Count + 1}";
-                }
-                else if (isNamePersonalized) // Si es personalizado
-                {
-                    name = $"{NombrePersonalizado} | #{teams.Count + 1}";
-                }
-                else // Predeterminado
-                {
-                    name = $"Grupo | #{teams.Count + 1}";
-                }
+                name = $"{prefijo} | #{teams.Count + 1}";
             }
-            else
+            else // Predeterminado
             {
-                if (isNameRandom)
-                {
-                    name = listaNombres[randomIndex];
-                }
-                else
-                {
-                    name = isNamePersonalized ? NombrePersonalizado : "Grupo";
-                }
+                name = $"Grupo | #{teams.Count + 1}";
             }
-
-            listaNombres.Remove(listaNombres[randomIndex]);
 
             await teamService.SaveAsync(name);
             await Refresh();
         }
 
-        string inforesult = $"Nombres:<br/> {(isNamePersonalized ? NombrePersonalizado : (isNameRandom ? "Random" : "Grupo"))}<br/> {(isSerialized ? "Con Serializacion" : "No Serializado")}";
+        string inforesult = $"Prefijo:<br/> {prefijo}";
         notify.ShowNotification(title: "Se crearon los grupos", message: inforesult, NotificationSeverity.Success);
-
     }
 
-    public void OnPersonalizedChange(ChangeEventArgs e)
-    {
-        isNameRandom = false;
-    }
-
-    public void OnRandomChange(ChangeEventArgs e)
-    {
-        isNamePersonalized = false;
-    }
 }
