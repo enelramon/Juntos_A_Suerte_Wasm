@@ -45,6 +45,13 @@ public class TeamService
             await SaveTeamsAsync(teams);
         }
     }
+
+    public async Task DeleteAllTeamsAsync()
+    {
+        List<Team> teams = new();
+        await SaveTeamsAsync(teams);
+    }
+
     public async Task<bool> UpdateTeamAsync(Team updatedTeam)
     {
         var teams = await GetTeamsAsync();
