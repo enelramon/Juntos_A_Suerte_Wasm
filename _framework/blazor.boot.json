@@ -8,10 +8,10 @@
   "resources": {
     "assembly": {
       "Blazored.LocalStorage.dll": "sha256-eXVgTw72kEn74FZgDQbLtvAmXbiZDSj5gzUnxVmwowQ=",
-      "Juntos_A_Suerte_Wasm.dll": "sha256-vGG4+SQCmyE5H8d8UBE6HzQIEDywjw5FeFab9\/7lNzU=",
-      "Microsoft.AspNetCore.Components.dll": "sha256-SAcax3ik\/QQE9CUyM8AKcteZtQL\/bpKboVmyEZH8cfA=",
+      "Juntos_A_Suerte_Wasm.dll": "sha256-KfDknp7jMxT868qiJtsRQL7U+7BdPxcJFS\/OST8QGbM=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-3EuuciJYH1whyurAjxRyg5GY4FQk6NFoYSzPlYVtRhM=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-3j8dhKIT5U\/B+XY+MZ28EPqtHnvPfF0uT53cDb8sSqk=",
-      "Microsoft.AspNetCore.Components.Web.dll": "sha256-uwDJat1bbpkZTsphRadz+\/LqQCiMrfuqTdOyc9b9nN0=",
+      "Microsoft.AspNetCore.Components.Web.dll": "sha256-ondk45jxEy+PQXbkQczmwuxEUyphVHWBCMQREGaQK0A=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-XCOctJUd08gOiPYVc+oS9bvDR1mMNjAxF7kQ69WHPL8=",
       "Microsoft.CSharp.dll": "sha256-lUYrwg+1p9EnE4bNYtKYW0A5dX6oneQDEic+2RCPeWo=",
       "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-X\/f4fDl2cuIRXeWHhK\/f2UqQbFioD+RU4a4CEh0zrrQ=",
