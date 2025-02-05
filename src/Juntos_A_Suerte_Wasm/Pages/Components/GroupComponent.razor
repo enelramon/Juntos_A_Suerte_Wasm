@@ -1,0 +1,102 @@
+﻿@inject NotificationService notify
+@inject NavigationManager Navigation
+@inject TeamService teamService
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col col-7">
+                <label for="CustomPrefix" class="form-label">Prefijo</label>
+                <InputText id="CustomPrefix" @bind-value="prefijo" class="form-control" placeholder="Default <Grupo>"></InputText>
+            </div>
+
+            <div class="col col-5">
+                <label for="GroupCount" class="form-label">Cantidad</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-danger btn-number" @onclick="Substract">
+                            <span class="bi bi-dash"></span>
+                        </button>
+                    </span>
+
+                    <InputNumber id="GroupCount" class="form-control" min @bind-Value="GroupCount" />
+
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-success btn-number" @onclick="Add">
+                            <span class="bi bi-plus-lg"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <button type="button" class="btn btn-success" @onclick="CreateGroups">Crear Grupos</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteAllGroups">Eliminar Grupos</button>
+    </div>
+</div>
+
+@code {
+    public string? prefijo { get; set; } = "";
+    public int GroupCount { get; set; } = 1;
+
+    List<Team> teams = new();
+
+    private async Task Refresh()
+    {
+        teams = await teamService.GetTeamsAsync();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Refresh();
+    }
+
+    public async Task DeleteAllGroups()
+    {
+        foreach (var team in teams)
+        {
+            await teamService.DeleteTeamAsync(team.TeamId);
+        }
+        await Refresh();
+        notify.ShowNotification(title: "Eliminacion de Grupos", message: "Se eliminaron todos los grupos", NotificationSeverity.Success);
+    }
+
+    public async Task CreateGroups()
+    {
+        for (int i = 0; i < GroupCount; i++)
+        {
+            string? name;
+
+            if (!string.IsNullOrEmpty(prefijo))
+            {
+                name = $"{prefijo} | #{teams.Count + 1}";
+            }
+            else
+            {
+                name = $"Grupo | #{teams.Count + 1}";
+            }
+
+            await teamService.SaveAsync(name);
+            await Refresh();
+        }
+
+        string inforesult = $"Prefijo: {prefijo}";
+        notify.ShowNotification(title: $"Se crearon {GroupCount} grupos<br/>", message: inforesult, NotificationSeverity.Success);
+    }
+
+    public void Add()
+    {
+        GroupCount++;
+    }
+
+    public void Substract()
+    {
+        if (GroupCount > 1)
+        {
+            GroupCount--;
+        }
+    }
+}
