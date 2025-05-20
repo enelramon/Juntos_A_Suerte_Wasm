@@ -8,7 +8,7 @@
   "resources": {
     "assembly": {
       "Blazored.LocalStorage.dll": "sha256-eXVgTw72kEn74FZgDQbLtvAmXbiZDSj5gzUnxVmwowQ=",
-      "Juntos_A_Suerte_Wasm.dll": "sha256-KfDknp7jMxT868qiJtsRQL7U+7BdPxcJFS\/OST8QGbM=",
+      "Juntos_A_Suerte_Wasm.dll": "sha256-XkSiIjvB8dX0hULscw1AodlWYaQ9FvkLWDgfIXq\/t6M=",
       "Microsoft.AspNetCore.Components.dll": "sha256-3EuuciJYH1whyurAjxRyg5GY4FQk6NFoYSzPlYVtRhM=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-3j8dhKIT5U\/B+XY+MZ28EPqtHnvPfF0uT53cDb8sSqk=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-ondk45jxEy+PQXbkQczmwuxEUyphVHWBCMQREGaQK0A=",
