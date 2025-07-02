@@ -56,10 +56,7 @@
 
     public async Task DeleteAllGroups()
     {
-        foreach (var team in teams)
-        {
-            await teamService.DeleteTeamAsync(team.TeamId);
-        }
+        await teamService.DeleteAllTeamsAsync();
         await Refresh();
         notify.ShowNotification(title: "Eliminacion de Grupos", message: "Se eliminaron todos los grupos", NotificationSeverity.Success);
     }
