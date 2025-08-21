@@ -1,0 +1,20 @@
+@page "/auth/callback"
+@inject NavigationManager Nav
+@inject Juntos_A_Suerte_Wasm.Services.AuthService Auth
+
+<div class="container py-4">
+    <h3>Completando inicio de sesión...</h3>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // After redirect back from API, cookie is set for the API domain; just navigate home
+            var me = await Auth.GetMeAsync();
+            Nav.NavigateTo("/");
+        }
+    }
+}
+
