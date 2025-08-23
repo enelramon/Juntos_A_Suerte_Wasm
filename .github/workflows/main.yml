@@ -21,9 +21,9 @@ jobs:
     
     # sets up .NET Core SDK 7.0.x
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: '7.0.x'
         
     # Install dotnet wasm buildtools workload
     - name: Install .NET WASM Build Tools
@@ -31,7 +31,7 @@ jobs:
 
     # publishes Blazor project to the release-folder 
     - name: Publish .NET Core Project 
-      run: dotnet publish -c Release -o release --nologo 
+      run: dotnet publish src/Juntos_A_Suerte_Wasm/Juntos_A_Suerte_Wasm.csproj -c Release -o release --nologo 
   
      # replacing / with /Juntos_A_Suerte_Wasm/, the command ensures that all relative links in the index.html file are interpreted within the context of the /Juntos_A_Suerte_Wasm/ subdirectory. This is necessary for a web application that resides within that subdirectory on a web server.
  

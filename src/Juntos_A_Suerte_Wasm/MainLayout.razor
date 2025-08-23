@@ -1,6 +1,54 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
+@inject Juntos_A_Suerte_Wasm.Services.AuthService Auth
+@inject NavigationManager Nav
+
 <RadzenNotification />
+
+<header class="d-flex justify-content-between align-items-center p-2 border-bottom">
+    <div class="fw-bold">Juntos A Suerte</div>
+    <div>
+        @if (_user is null)
+        {
+            <button class="btn btn-outline-dark btn-sm" @onclick="LoginWithGitHub">
+                <i class="bi bi-github"></i> Login con GitHub
+            </button>
+        }
+        else
+        {
+            <div class="d-flex align-items-center gap-2">
+                @if (!string.IsNullOrEmpty(_user.avatar))
+                {
+                    <img src="@_user.avatar" alt="avatar" width="26" height="26" style="border-radius:50%" />
+                }
+                <span>@_user.name (@_user.login)</span>
+                <button class="btn btn-outline-secondary btn-sm" @onclick="Logout">Salir</button>
+            </div>
+        }
+    </div>
+  </header>
 
 <main>
     @Body
 </main>
+
+@code {
+    private AuthService.AuthUser? _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await Auth.GetMeAsync();
+    }
+
+    private void LoginWithGitHub()
+    {
+        var url = Auth.GetGitHubLoginUrl();
+        Nav.NavigateTo(url, forceLoad: true);
+    }
+
+    private async Task Logout()
+    {
+        await Auth.LogoutAsync();
+        _user = null;
+        StateHasChanged();
+    }
+}
